@@ -35,22 +35,26 @@ const FormInput: React.FC<FormInputProps> = ({
   };
 
   const inputClasses = `
-    w-full px-4 py-3 border-2 rounded-lg transition-all duration-200 
-    focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500
+    w-full px-4 py-4 border-2 rounded-2xl transition-all duration-300 
+    focus:outline-none focus:ring-4 focus:ring-rose-200 focus:border-rose-400
     ${error 
-      ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-500/20' 
-      : 'border-gray-200 bg-white hover:border-gray-300'
+      ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-200' 
+      : 'border-gray-200 bg-white hover:border-rose-300 hover:shadow-md'
     }
-    text-gray-900 placeholder-gray-400
+    text-gray-900 placeholder-gray-400 font-medium
   `;
 
   return (
-    <div className="space-y-2">
-      <label className="block text-sm font-medium text-gray-700">
+    <div className="space-y-3">
+      <label className="block text-sm font-bold text-gray-700">
         <div className="flex items-center gap-2">
-          {Icon && <Icon size={16} className="text-gray-500" />}
+          {Icon && (
+            <div className="p-1.5 bg-rose-100 rounded-lg">
+              <Icon size={16} className="text-rose-600" />
+            </div>
+          )}
           {label}
-          {required && <span className="text-red-500">*</span>}
+          {required && <span className="text-red-500 text-lg">*</span>}
         </div>
       </label>
       
@@ -76,7 +80,7 @@ const FormInput: React.FC<FormInputProps> = ({
           rows={rows}
           maxLength={maxLength}
           placeholder={placeholder || `Masukkan ${label.toLowerCase()}`}
-          className={inputClasses}
+          className={`${inputClasses} resize-none`}
         />
       ) : (
         <input
@@ -91,14 +95,14 @@ const FormInput: React.FC<FormInputProps> = ({
       )}
       
       {error && (
-        <p className="text-sm text-red-600 flex items-center gap-1">
-          <AlertCircle size={14} />
+        <p className="text-sm text-red-600 flex items-center gap-2 bg-red-50 p-3 rounded-xl border border-red-200">
+          <AlertCircle size={16} />
           {error}
         </p>
       )}
       
       {maxLength && (
-        <p className="text-xs text-gray-400 text-right">
+        <p className="text-xs text-gray-400 text-right font-medium">
           {value.length}/{maxLength}
         </p>
       )}

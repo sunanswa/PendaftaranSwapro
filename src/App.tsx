@@ -22,7 +22,8 @@ import {
   Target,
   CreditCard,
   Car,
-  FileText
+  FileText,
+  Sparkles
 } from 'lucide-react';
 
 import FormInput from './components/FormInput';
@@ -140,11 +141,11 @@ function App() {
   const [submitMessage, setSubmitMessage] = useState('');
 
   const steps = [
-    { title: 'Data Pribadi', icon: User },
-    { title: 'Alamat', icon: MapPin },
-    { title: 'Pendidikan', icon: GraduationCap },
-    { title: 'Pengalaman', icon: Briefcase },
-    { title: 'Dokumen', icon: FileCheck },
+    { title: 'Data Pribadi', icon: User, color: 'from-rose-400 to-pink-500' },
+    { title: 'Alamat', icon: MapPin, color: 'from-violet-400 to-purple-500' },
+    { title: 'Pendidikan', icon: GraduationCap, color: 'from-blue-400 to-indigo-500' },
+    { title: 'Pengalaman', icon: Briefcase, color: 'from-emerald-400 to-teal-500' },
+    { title: 'Dokumen', icon: FileCheck, color: 'from-amber-400 to-orange-500' },
   ];
 
   const posisiOptions = [
@@ -167,7 +168,7 @@ function App() {
     'SMSF JAKARTA UTARA'
   ];
 
-  // Optimized input handler - no debouncing, direct update
+  // Optimized input handler
   const handleInputChange = useCallback((field: keyof FormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     
@@ -399,74 +400,105 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-white to-violet-50">
+      {/* Decorative Background Elements */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute -top-40 -right-40 w-80 h-80 bg-gradient-to-br from-pink-200/30 to-rose-300/30 rounded-full blur-3xl"></div>
+        <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-gradient-to-br from-violet-200/30 to-purple-300/30 rounded-full blur-3xl"></div>
+        <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-gradient-to-br from-blue-200/20 to-indigo-300/20 rounded-full blur-3xl"></div>
+      </div>
+
       {/* Header */}
-      <div className="bg-white shadow-sm border-b">
-        <div className="max-w-4xl mx-auto px-4 py-6">
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <img 
-              src="/swapro copy.png" 
-              alt="SWAPRO Logo" 
-              className="h-16 w-auto"
-            />
-            <div className="text-center sm:text-left">
-              <h1 className="text-2xl sm:text-3xl font-bold text-gray-900">
-                Portal Karir SWAPRO
+      <div className="relative bg-white/80 backdrop-blur-sm shadow-lg border-b border-rose-100">
+        <div className="max-w-5xl mx-auto px-4 py-8">
+          {/* Logo and Title Section */}
+          <div className="text-center mb-8">
+            <div className="flex justify-center mb-6">
+              <div className="relative">
+                <div className="absolute inset-0 bg-gradient-to-r from-rose-400 to-violet-400 rounded-3xl blur-lg opacity-30"></div>
+                <div className="relative bg-white p-4 rounded-3xl shadow-xl border border-rose-100">
+                  <img 
+                    src="/swapro copy.png" 
+                    alt="SWAPRO Logo" 
+                    className="h-20 w-auto"
+                  />
+                </div>
+              </div>
+            </div>
+            
+            <div className="space-y-3">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-black bg-gradient-to-r from-rose-600 via-violet-600 to-indigo-600 bg-clip-text text-transparent tracking-tight">
+                PORTAL KARIR SWAPRO
               </h1>
-              <p className="text-gray-600 mt-1">Formulir Pendaftaran Karyawan</p>
+              <div className="flex items-center justify-center gap-2">
+                <Sparkles className="text-rose-400" size={20} />
+                <p className="text-lg text-gray-600 font-medium">Formulir Pendaftaran Karyawan</p>
+                <Sparkles className="text-violet-400" size={20} />
+              </div>
             </div>
           </div>
           
           {/* Anti-Duplicate Notice */}
-          <div className="mt-6 bg-blue-50 border border-blue-200 rounded-lg p-4">
-            <div className="flex items-center justify-center gap-2 text-blue-800">
-              <Shield size={18} />
-              <span className="text-sm font-medium">
-                Sistem Anti-Duplikasi: Setiap NIK hanya dapat mendaftar sekali
+          <div className="bg-gradient-to-r from-rose-50 to-violet-50 border-2 border-rose-200 rounded-2xl p-6 shadow-lg">
+            <div className="flex items-center justify-center gap-3 text-rose-800">
+              <div className="p-2 bg-rose-100 rounded-full">
+                <Shield size={20} className="text-rose-600" />
+              </div>
+              <span className="text-sm font-semibold">
+                🔒 Sistem Anti-Duplikasi Aktif - Setiap NIK hanya dapat mendaftar sekali
               </span>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="max-w-4xl mx-auto px-4 py-8">
+      <div className="relative max-w-5xl mx-auto px-4 py-8">
         {/* Status Messages */}
         {submitStatus === 'success' && (
-          <div className="mb-6 p-4 bg-green-50 border border-green-200 text-green-800 rounded-lg flex items-center gap-3">
-            <CheckCircle size={20} />
-            <span className="font-medium">{submitMessage}</span>
+          <div className="mb-8 p-6 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 text-emerald-800 rounded-2xl flex items-center gap-3 shadow-lg">
+            <div className="p-2 bg-emerald-100 rounded-full">
+              <CheckCircle size={24} className="text-emerald-600" />
+            </div>
+            <span className="font-semibold">{submitMessage}</span>
           </div>
         )}
 
         {submitStatus === 'error' && (
-          <div className="mb-6 p-4 bg-red-50 border border-red-200 text-red-800 rounded-lg flex items-center gap-3">
-            <AlertCircle size={20} />
-            <span className="font-medium">{submitMessage}</span>
+          <div className="mb-8 p-6 bg-gradient-to-r from-red-50 to-rose-50 border-2 border-red-200 text-red-800 rounded-2xl flex items-center gap-3 shadow-lg">
+            <div className="p-2 bg-red-100 rounded-full">
+              <AlertCircle size={24} className="text-red-600" />
+            </div>
+            <span className="font-semibold">{submitMessage}</span>
           </div>
         )}
 
         {/* Progress Steps */}
         <ProgressSteps steps={steps} currentStep={currentStep} />
 
-        {/* Form */}
-        <div className="bg-white rounded-lg shadow-sm border">
+        {/* Form Container */}
+        <div className="bg-white/90 backdrop-blur-sm rounded-3xl shadow-2xl border border-rose-100 overflow-hidden">
           <form onSubmit={handleSubmit}>
-            <div className="p-6 sm:p-8">
+            <div className="p-6 sm:p-8 lg:p-12">
               {/* Step 0: Data Pribadi */}
               {currentStep === 0 && (
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <h2 className="text-xl font-bold text-gray-900 mb-2">Data Pribadi & Posisi</h2>
-                    <p className="text-gray-600">Lengkapi informasi pribadi dan posisi yang dilamar</p>
+                <div className="space-y-8">
+                  <div className="text-center mb-10">
+                    <div className="inline-flex items-center gap-3 p-6 bg-gradient-to-r from-rose-400 to-pink-500 text-white rounded-3xl mb-6 shadow-xl">
+                      <User size={32} />
+                      <h2 className="text-2xl font-bold">Data Pribadi & Posisi</h2>
+                    </div>
+                    <p className="text-gray-600 text-lg">Lengkapi informasi pribadi dan posisi yang dilamar</p>
                   </div>
                   
-                  {/* Posisi */}
-                  <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
-                    <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                      <Target size={20} />
+                  {/* Posisi Section */}
+                  <div className="bg-gradient-to-r from-rose-50 to-pink-50 p-8 rounded-3xl border-2 border-rose-200 shadow-lg">
+                    <h3 className="text-xl font-bold text-rose-900 mb-6 flex items-center gap-3">
+                      <div className="p-2 bg-rose-100 rounded-full">
+                        <Target size={24} className="text-rose-600" />
+                      </div>
                       Informasi Posisi
                     </h3>
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                       <FormInput
                         label="Posisi yang Dilamar"
                         name="posisiDilamar"
@@ -492,8 +524,8 @@ function App() {
                     </div>
                   </div>
 
-                  {/* Data Pribadi */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Personal Information */}
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <FormInput
                       label="Nama Lengkap"
                       name="namaLengkap"
@@ -599,13 +631,16 @@ function App() {
 
               {/* Step 1: Alamat */}
               {currentStep === 1 && (
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <h2 className="text-xl font-bold text-gray-900 mb-2">Informasi Alamat</h2>
-                    <p className="text-gray-600">Lengkapi alamat lengkap dan detail kontak</p>
+                <div className="space-y-8">
+                  <div className="text-center mb-10">
+                    <div className="inline-flex items-center gap-3 p-6 bg-gradient-to-r from-violet-400 to-purple-500 text-white rounded-3xl mb-6 shadow-xl">
+                      <MapPin size={32} />
+                      <h2 className="text-2xl font-bold">Informasi Alamat</h2>
+                    </div>
+                    <p className="text-gray-600 text-lg">Lengkapi alamat lengkap dan detail kontak</p>
                   </div>
                   
-                  <div className="space-y-4">
+                  <div className="space-y-6">
                     <FormInput
                       label="Alamat Lengkap Sesuai KTP"
                       name="alamatKtp"
@@ -629,7 +664,7 @@ function App() {
                       icon={Home}
                     />
                     
-                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                       <FormInput
                         label="RT/RW"
                         name="rtRw"
@@ -682,13 +717,16 @@ function App() {
 
               {/* Step 2: Pendidikan */}
               {currentStep === 2 && (
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <h2 className="text-xl font-bold text-gray-900 mb-2">Riwayat Pendidikan</h2>
-                    <p className="text-gray-600">Informasi pendidikan terakhir dan prestasi akademik</p>
+                <div className="space-y-8">
+                  <div className="text-center mb-10">
+                    <div className="inline-flex items-center gap-3 p-6 bg-gradient-to-r from-blue-400 to-indigo-500 text-white rounded-3xl mb-6 shadow-xl">
+                      <GraduationCap size={32} />
+                      <h2 className="text-2xl font-bold">Riwayat Pendidikan</h2>
+                    </div>
+                    <p className="text-gray-600 text-lg">Informasi pendidikan terakhir dan prestasi akademik</p>
                   </div>
                   
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     <FormInput
                       label="Tingkat Pendidikan Terakhir"
                       name="tingkatPendidikan"
@@ -746,14 +784,17 @@ function App() {
 
               {/* Step 3: Pengalaman Kerja */}
               {currentStep === 3 && (
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <h2 className="text-xl font-bold text-gray-900 mb-2">Pengalaman Kerja</h2>
-                    <p className="text-gray-600">Ceritakan pengalaman kerja dan keahlian profesional</p>
+                <div className="space-y-8">
+                  <div className="text-center mb-10">
+                    <div className="inline-flex items-center gap-3 p-6 bg-gradient-to-r from-emerald-400 to-teal-500 text-white rounded-3xl mb-6 shadow-xl">
+                      <Briefcase size={32} />
+                      <h2 className="text-2xl font-bold">Pengalaman Kerja</h2>
+                    </div>
+                    <p className="text-gray-600 text-lg">Ceritakan pengalaman kerja dan keahlian profesional</p>
                   </div>
                   
-                  <div className="space-y-6">
-                    <div className="bg-orange-50 p-6 rounded-lg border border-orange-200">
+                  <div className="space-y-8">
+                    <div className="bg-gradient-to-r from-emerald-50 to-teal-50 p-8 rounded-3xl border-2 border-emerald-200 shadow-lg">
                       <BooleanInput
                         label="Apakah Anda memiliki pengalaman kerja sebelumnya?"
                         name="pengalamanKerja"
@@ -764,8 +805,8 @@ function App() {
                     </div>
                     
                     {formData.pengalamanKerja && (
-                      <div className="space-y-4">
-                        <div className="bg-blue-50 p-6 rounded-lg border border-blue-200">
+                      <div className="space-y-6 animate-in slide-in-from-top duration-500">
+                        <div className="bg-gradient-to-r from-blue-50 to-indigo-50 p-8 rounded-3xl border-2 border-blue-200 shadow-lg">
                           <BooleanInput
                             label="Apakah pengalaman tersebut di bidang Leasing/Finansial?"
                             name="pengalamanLeasing"
@@ -775,7 +816,7 @@ function App() {
                           />
                         </div>
                         
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                           <FormInput
                             label="Nama Perusahaan"
                             name="namaPerusahaan"
@@ -817,20 +858,25 @@ function App() {
 
               {/* Step 4: Dokumen */}
               {currentStep === 4 && (
-                <div className="space-y-6">
-                  <div className="text-center mb-8">
-                    <h2 className="text-xl font-bold text-gray-900 mb-2">Dokumen & Motivasi</h2>
-                    <p className="text-gray-600">Kelengkapan dokumen dan motivasi bergabung</p>
+                <div className="space-y-8">
+                  <div className="text-center mb-10">
+                    <div className="inline-flex items-center gap-3 p-6 bg-gradient-to-r from-amber-400 to-orange-500 text-white rounded-3xl mb-6 shadow-xl">
+                      <FileCheck size={32} />
+                      <h2 className="text-2xl font-bold">Dokumen & Motivasi</h2>
+                    </div>
+                    <p className="text-gray-600 text-lg">Kelengkapan dokumen dan motivasi bergabung</p>
                   </div>
                   
-                  <div className="space-y-6">
+                  <div className="space-y-8">
                     {/* Dokumen */}
-                    <div className="bg-gray-50 p-6 rounded-lg border border-gray-200">
-                      <h3 className="font-semibold text-gray-900 mb-4 flex items-center gap-2">
-                        <FileCheck size={20} />
+                    <div className="bg-gradient-to-r from-amber-50 to-orange-50 p-8 rounded-3xl border-2 border-amber-200 shadow-lg">
+                      <h3 className="text-xl font-bold text-amber-900 mb-6 flex items-center gap-3">
+                        <div className="p-2 bg-amber-100 rounded-full">
+                          <FileCheck size={24} className="text-amber-600" />
+                        </div>
                         Kelengkapan Dokumen & Persyaratan
                       </h3>
-                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                         <BooleanInput
                           label="Memiliki Kendaraan Pribadi"
                           name="kendaraanPribadi"
@@ -875,7 +921,7 @@ function App() {
                         />
                       </div>
                       
-                      <div className="mt-4 pt-4 border-t border-gray-200">
+                      <div className="mt-6 pt-6 border-t border-amber-200">
                         <BooleanInput
                           label="Apakah Anda memiliki riwayat buruk di pinjaman/kredit?"
                           name="riwayatBurukKredit"
@@ -898,26 +944,30 @@ function App() {
                     />
                     
                     {/* CV Upload */}
-                    <div className="space-y-3">
-                      <label className="block text-sm font-medium text-gray-700">
+                    <div className="space-y-4">
+                      <label className="block text-sm font-semibold text-gray-700">
                         Upload CV Lengkap (Format PDF) <span className="text-red-500">*</span>
                       </label>
-                      <div className={`border-2 border-dashed rounded-lg p-6 text-center transition-colors ${
+                      <div className={`border-3 border-dashed rounded-3xl p-8 text-center transition-all duration-300 ${
                         formData.cvFile 
-                          ? 'border-green-300 bg-green-50' 
-                          : 'border-gray-300 bg-gray-50 hover:border-gray-400'
+                          ? 'border-emerald-300 bg-gradient-to-r from-emerald-50 to-teal-50 shadow-lg' 
+                          : 'border-gray-300 bg-gradient-to-r from-gray-50 to-slate-50 hover:border-rose-300 hover:bg-gradient-to-r hover:from-rose-50 hover:to-pink-50'
                       }`}>
-                        <Upload className={`mx-auto h-12 w-12 mb-3 ${
-                          formData.cvFile ? 'text-green-500' : 'text-gray-400'
-                        }`} />
-                        <div className="space-y-2">
+                        <div className={`mx-auto w-20 h-20 rounded-full flex items-center justify-center mb-4 ${
+                          formData.cvFile ? 'bg-emerald-100' : 'bg-gray-100'
+                        }`}>
+                          <Upload className={`h-10 w-10 ${
+                            formData.cvFile ? 'text-emerald-500' : 'text-gray-400'
+                          }`} />
+                        </div>
+                        <div className="space-y-3">
                           <label htmlFor="cv-upload" className="cursor-pointer">
-                            <span className={`block font-medium ${
-                              formData.cvFile ? 'text-green-700' : 'text-gray-700'
+                            <span className={`block text-lg font-bold ${
+                              formData.cvFile ? 'text-emerald-700' : 'text-gray-700'
                             }`}>
                               {formData.cvFile ? `✓ ${formData.cvFile.name}` : 'Klik untuk upload CV Anda'}
                             </span>
-                            <span className="block text-sm text-gray-500 mt-1">
+                            <span className="block text-sm text-gray-500 mt-2">
                               File harus berformat PDF, maksimal 5MB
                             </span>
                           </label>
@@ -931,10 +981,18 @@ function App() {
                         </div>
                       </div>
                       {errors.cvFile && (
-                        <p className="text-sm text-red-600 flex items-center gap-1">
-                          <AlertCircle size={14} />
+                        <p className="text-sm text-red-600 flex items-center gap-2">
+                          <AlertCircle size={16} />
                           {errors.cvFile}
                         </p>
+                      )}
+                      {formData.cvFile && (
+                        <div className="p-4 bg-gradient-to-r from-emerald-50 to-teal-50 border-2 border-emerald-200 rounded-2xl">
+                          <p className="text-sm text-emerald-700 flex items-center gap-2">
+                            <CheckCircle size={16} />
+                            File CV siap diupload: <strong>{formData.cvFile.name}</strong> ({(formData.cvFile.size / 1024 / 1024).toFixed(2)} MB)
+                          </p>
+                        </div>
                       )}
                     </div>
                   </div>
@@ -942,58 +1000,62 @@ function App() {
               )}
             </div>
 
-            {/* Navigation */}
-            <div className="bg-gray-50 px-6 sm:px-8 py-4 border-t flex justify-between items-center">
-              <button
-                type="button"
-                onClick={prevStep}
-                className={`flex items-center gap-2 px-4 py-2 rounded-lg font-medium transition-colors ${
-                  currentStep === 0
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-white text-gray-700 hover:bg-gray-100 border border-gray-300'
-                }`}
-                disabled={currentStep === 0}
-              >
-                <ChevronLeft size={18} />
-                Sebelumnya
-              </button>
-              
-              <span className="text-sm text-gray-500 font-medium">
-                {currentStep + 1} dari {steps.length}
-              </span>
-              
-              {currentStep === steps.length - 1 ? (
-                <button
-                  type="submit"
-                  disabled={isSubmitting}
-                  className={`flex items-center gap-2 px-6 py-2 rounded-lg font-medium transition-colors ${
-                    isSubmitting
-                      ? 'bg-gray-400 text-white cursor-not-allowed'
-                      : 'bg-blue-600 text-white hover:bg-blue-700'
-                  }`}
-                >
-                  {isSubmitting ? (
-                    <>
-                      <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-white"></div>
-                      Mengirim...
-                    </>
-                  ) : (
-                    <>
-                      <Send size={18} />
-                      Kirim Formulir
-                    </>
-                  )}
-                </button>
-              ) : (
+            {/* Navigation Footer */}
+            <div className="bg-gradient-to-r from-rose-50 to-violet-50 px-6 sm:px-8 lg:px-12 py-6 border-t border-rose-100">
+              <div className="flex justify-between items-center">
                 <button
                   type="button"
-                  onClick={nextStep}
-                  className="flex items-center gap-2 px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
+                  onClick={prevStep}
+                  className={`flex items-center gap-3 px-6 py-3 rounded-2xl font-semibold transition-all duration-300 ${
+                    currentStep === 0
+                      ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                      : 'bg-white text-gray-700 hover:bg-gray-50 shadow-lg hover:shadow-xl border-2 border-gray-200 hover:border-gray-300 transform hover:scale-105'
+                  }`}
+                  disabled={currentStep === 0}
                 >
-                  Selanjutnya
-                  <ChevronRight size={18} />
+                  <ChevronLeft size={20} />
+                  Sebelumnya
                 </button>
-              )}
+                
+                <div className="text-center">
+                  <span className="text-sm text-gray-500 font-semibold">
+                    Langkah {currentStep + 1} dari {steps.length}
+                  </span>
+                </div>
+                
+                {currentStep === steps.length - 1 ? (
+                  <button
+                    type="submit"
+                    disabled={isSubmitting}
+                    className={`flex items-center gap-3 px-8 py-3 rounded-2xl font-bold transition-all duration-300 ${
+                      isSubmitting
+                        ? 'bg-gray-400 text-white cursor-not-allowed'
+                        : 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 shadow-xl hover:shadow-2xl transform hover:scale-105'
+                    }`}
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                        Mengirim Formulir...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={20} />
+                        Kirim Formulir
+                      </>
+                    )}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={nextStep}
+                    className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-rose-500 to-violet-500 text-white rounded-2xl font-semibold hover:from-rose-600 hover:to-violet-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                  >
+                    Selanjutnya
+                    <ChevronRight size={20} />
+                  </button>
+                )}
+              </div>
             </div>
           </form>
         </div>

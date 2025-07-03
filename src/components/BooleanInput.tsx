@@ -16,35 +16,69 @@ const BooleanInput: React.FC<BooleanInputProps> = ({
   icon: Icon
 }) => {
   return (
-    <div className="space-y-3">
-      <label className="block text-sm font-medium text-gray-700">
+    <div className="space-y-4">
+      <label className="block text-sm font-bold text-gray-700">
         <div className="flex items-center gap-2">
-          {Icon && <Icon size={16} className="text-gray-500" />}
+          {Icon && (
+            <div className="p-1.5 bg-rose-100 rounded-lg">
+              <Icon size={16} className="text-rose-600" />
+            </div>
+          )}
           {label}
         </div>
       </label>
       
-      <div className="flex gap-4">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name={name}
-            checked={value === true}
-            onChange={() => onChange(true)}
-            className="w-4 h-4 text-green-600 focus:ring-green-500"
-          />
-          <span className="text-sm text-gray-700">Ya</span>
+      <div className="flex gap-6">
+        <label className="flex items-center gap-3 cursor-pointer group">
+          <div className="relative">
+            <input
+              type="radio"
+              name={name}
+              checked={value === true}
+              onChange={() => onChange(true)}
+              className="sr-only"
+            />
+            <div className={`w-6 h-6 rounded-full border-2 transition-all duration-300 ${
+              value === true 
+                ? 'border-emerald-500 bg-emerald-500' 
+                : 'border-gray-300 bg-white group-hover:border-emerald-300'
+            }`}>
+              {value === true && (
+                <div className="w-2 h-2 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+              )}
+            </div>
+          </div>
+          <span className={`text-sm font-semibold transition-colors ${
+            value === true ? 'text-emerald-700' : 'text-gray-700 group-hover:text-emerald-600'
+          }`}>
+            Ya
+          </span>
         </label>
         
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="radio"
-            name={name}
-            checked={value === false}
-            onChange={() => onChange(false)}
-            className="w-4 h-4 text-red-600 focus:ring-red-500"
-          />
-          <span className="text-sm text-gray-700">Tidak</span>
+        <label className="flex items-center gap-3 cursor-pointer group">
+          <div className="relative">
+            <input
+              type="radio"
+              name={name}
+              checked={value === false}
+              onChange={() => onChange(false)}
+              className="sr-only"
+            />
+            <div className={`w-6 h-6 rounded-full border-2 transition-all duration-300 ${
+              value === false 
+                ? 'border-red-500 bg-red-500' 
+                : 'border-gray-300 bg-white group-hover:border-red-300'
+            }`}>
+              {value === false && (
+                <div className="w-2 h-2 bg-white rounded-full absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"></div>
+              )}
+            </div>
+          </div>
+          <span className={`text-sm font-semibold transition-colors ${
+            value === false ? 'text-red-700' : 'text-gray-700 group-hover:text-red-600'
+          }`}>
+            Tidak
+          </span>
         </label>
       </div>
     </div>
