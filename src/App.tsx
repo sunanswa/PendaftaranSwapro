@@ -236,8 +236,8 @@ function App() {
   };
 
   const submitToGoogleSheets = async (data: any) => {
-    // Replace this URL with your Google Apps Script web app URL
-    const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+    // Updated with your actual Google Apps Script URL
+    const GOOGLE_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwqbhFE0JP3-C4_nTaFp5eduOAeqvbWe2enBw-YjloKRApUlmZtnoPogHvDkfqL7S8Y/exec';
     
     try {
       const response = await fetch(GOOGLE_SCRIPT_URL, {
