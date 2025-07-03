@@ -407,7 +407,11 @@ const App: React.FC = () => {
         cvFileName
       };
 
-      const response = await fetch('YOUR_GOOGLE_APPS_SCRIPT_URL_HERE', {
+      // PENTING: Ganti URL ini dengan URL Google Apps Script Anda yang sebenarnya
+      // Contoh: 'https://script.google.com/macros/s/AKfycbxxx.../exec'
+      const GOOGLE_APPS_SCRIPT_URL = 'https://script.google.com/macros/s/YOUR_SCRIPT_ID_HERE/exec';
+
+      const response = await fetch(GOOGLE_APPS_SCRIPT_URL, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
