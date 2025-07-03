@@ -11,6 +11,18 @@ Untuk menghubungkan form dengan Google Spreadsheet dan Google Drive Anda, ikuti 
 ```javascript
 function doPost(e) {
   try {
+    // Check if request has postData
+    if (!e || !e.postData || !e.postData.contents) {
+      console.error('No postData found in request');
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          success: false, 
+          error: 'No data received',
+          message: 'Request tidak mengandung data'
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+
     // ID Spreadsheet Anda
     const SPREADSHEET_ID = '1f1SPwqEnCocOVKKTq-6T5U7hB4zK0ICB1huyyv40toA';
     
@@ -22,7 +34,19 @@ function doPost(e) {
     const sheet = ss.getActiveSheet();
     
     // Parse data dari request
-    const data = JSON.parse(e.postData.contents);
+    let data;
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch (parseError) {
+      console.error('Error parsing JSON:', parseError);
+      return ContentService
+        .createTextOutput(JSON.stringify({
+          success: false, 
+          error: 'Invalid JSON data',
+          message: 'Data tidak valid'
+        }))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
     
     // Jika ini adalah baris pertama, tambahkan header
     if (sheet.getLastRow() === 0) {
@@ -119,48 +143,48 @@ function doPost(e) {
     
     // Siapkan data untuk dimasukkan
     const rowData = [
-      new Date(data.timestamp),
-      data.posisiDilamar,
-      data.penempatan,
-      data.namaLengkap,
-      data.nik,
-      data.noHp,
-      data.tempatLahir,
-      data.tanggalLahir,
-      data.umur,
-      data.jenisKelamin,
-      data.statusPerkawinan,
-      data.agama,
-      data.namaAyah,
-      data.namaIbu,
-      data.alamatKtp,
-      data.alamatDomisili,
-      data.rtRw,
-      data.nomorRumah,
-      data.kelurahan,
-      data.kecamatan,
-      data.kota,
-      data.kodePos,
-      data.tingkatPendidikan,
-      data.namaSekolah,
-      data.jurusan,
-      data.tahunMasuk,
-      data.tahunLulus,
-      data.ipk,
-      data.pengalamanKerja,
-      data.pengalamanLeasing,
-      data.namaPerusahaan,
-      data.posisiJabatan,
-      data.periodeKerja,
-      data.deskripsiTugas,
-      data.kendaraanPribadi,
-      data.ktpAsli,
-      data.simC,
-      data.simA,
-      data.skck,
-      data.npwp,
-      data.riwayatBurukKredit,
-      data.alasanMelamar,
+      new Date(data.timestamp || new Date()),
+      data.posisiDilamar || '',
+      data.penempatan || '',
+      data.namaLengkap || '',
+      data.nik || '',
+      data.noHp || '',
+      data.tempatLahir || '',
+      data.tanggalLahir || '',
+      data.umur || '',
+      data.jenisKelamin || '',
+      data.statusPerkawinan || '',
+      data.agama || '',
+      data.namaAyah || '',
+      data.namaIbu || '',
+      data.alamatKtp || '',
+      data.alamatDomisili || '',
+      data.rtRw || '',
+      data.nomorRumah || '',
+      data.kelurahan || '',
+      data.kecamatan || '',
+      data.kota || '',
+      data.kodePos || '',
+      data.tingkatPendidikan || '',
+      data.namaSekolah || '',
+      data.jurusan || '',
+      data.tahunMasuk || '',
+      data.tahunLulus || '',
+      data.ipk || '',
+      data.pengalamanKerja || '',
+      data.pengalamanLeasing || '',
+      data.namaPerusahaan || '',
+      data.posisiJabatan || '',
+      data.periodeKerja || '',
+      data.deskripsiTugas || '',
+      data.kendaraanPribadi || '',
+      data.ktpAsli || '',
+      data.simC || '',
+      data.simA || '',
+      data.skck || '',
+      data.npwp || '',
+      data.riwayatBurukKredit || '',
+      data.alasanMelamar || '',
       cvFileName,
       cvDriveLink
     ];
@@ -180,7 +204,7 @@ function doPost(e) {
       cvLinkCell.setFontColor('#1a73e8');
     }
     
-    console.log('Data saved successfully for:', data.namaLengkap);
+    console.log('Data saved successfully for:', data.namaLengkap || 'Unknown');
     
     return ContentService
       .createTextOutput(JSON.stringify({
@@ -236,18 +260,13 @@ function testConnections() {
   }
 }
 
-// Function untuk membuat sample data (opsional)
-function createSampleData() {
-  const SPREADSHEET_ID = '1f1SPwqEnCocOVKKTq-6T5U7hB4zK0ICB1huyyv40toA';
-  const ss = SpreadsheetApp.openById(SPREADSHEET_ID);
-  const sheet = ss.getActiveSheet();
-  
-  // Sample data
+// Function untuk test doPost dengan sample data
+function testDoPost() {
   const sampleData = {
     timestamp: new Date().toISOString(),
     posisiDilamar: 'Sales Officer Chaneling (SOC)',
     penempatan: 'ADIRA TEBET MOTOR',
-    namaLengkap: 'John Doe',
+    namaLengkap: 'John Doe Test',
     nik: '1234567890123456',
     noHp: '081234567890',
     tempatLahir: 'Jakarta',
@@ -286,7 +305,7 @@ function createSampleData() {
     npwp: 'Ya',
     riwayatBurukKredit: 'Tidak',
     alasanMelamar: 'Tertarik dengan perusahaan dan posisi yang ditawarkan',
-    cvFileName: 'sample_cv.pdf',
+    cvFileName: 'test_cv.pdf',
     cvFileData: null
   };
   
@@ -306,10 +325,11 @@ function createSampleData() {
 2. Pilih "Google Drive API"
 3. Klik "Add"
 
-## 4. Test Koneksi (Opsional)
-1. Di Google Apps Script, klik "Run" pada function `testConnections`
-2. Authorize semua permissions yang diminta
-3. Cek log untuk memastikan koneksi berhasil
+## 4. Test Koneksi & Script
+1. **Test Koneksi**: Jalankan function `testConnections` untuk memastikan akses ke spreadsheet dan drive folder
+2. **Test Script**: Jalankan function `testDoPost` untuk test dengan sample data
+3. Authorize semua permissions yang diminta
+4. Cek log untuk memastikan tidak ada error
 
 ## 5. Deploy Web App
 1. Klik "Deploy" > "New deployment"
@@ -328,42 +348,24 @@ Ganti `YOUR_GOOGLE_APPS_SCRIPT_URL_HERE` di file App.tsx dengan URL yang Anda da
 2. Cek apakah data masuk ke spreadsheet: https://docs.google.com/spreadsheets/d/1f1SPwqEnCocOVKKTq-6T5U7hB4zK0ICB1huyyv40toA/edit
 3. Cek apakah file CV terupload ke Google Drive: https://drive.google.com/drive/folders/1CX03Rk8VImbIFVt1iR9BX17ie1T8IfC_
 
-## Fitur yang Akan Bekerja:
-✅ **Data form** → Masuk ke Google Spreadsheet Anda
-✅ **File CV** → Upload ke Google Drive folder Anda  
-✅ **Link CV** → Tersimpan di spreadsheet untuk akses mudah
-✅ **Auto-naming** → File CV akan dinamai: `NamaLengkap_Posisi_CV.pdf`
-✅ **Permissions** → File CV bisa diakses via link
-✅ **Auto-formatting** → Header berwarna, border otomatis
-✅ **File validation** → Hanya PDF maksimal 5MB
+## Troubleshooting Error yang Anda Alami:
 
-## Struktur Data di Spreadsheet:
-- **Header berwarna biru** dengan semua field form
-- **Kolom terakhir** berisi link langsung ke file CV di Google Drive
-- **Timestamp otomatis** untuk setiap submission
-- **Auto-resize columns** untuk readability
-- **Highlight CV links** yang berhasil diupload
+### ❌ `TypeError: Cannot read properties of undefined (reading 'postData')`
+**Penyebab**: Function `doPost` dipanggil tanpa data POST yang valid
+**Solusi**: 
+1. ✅ Sudah ditambahkan error handling untuk cek `postData`
+2. ✅ Sudah ditambahkan fallback values untuk semua field
+3. ✅ Sudah ditambahkan function `testDoPost` untuk testing
 
-## Keamanan & Permissions:
-- **File CV** akan ter-share dengan permission "Anyone with link can view"
-- **Folder Google Drive** hanya bisa diakses oleh Anda
-- **Spreadsheet** hanya bisa diakses oleh Anda
-- **Script** berjalan dengan permission Anda
+### 🔧 Langkah Debug:
+1. **Jalankan `testConnections`** - pastikan akses ke spreadsheet & drive OK
+2. **Jalankan `testDoPost`** - test script dengan sample data
+3. **Cek Execution log** - lihat apakah ada error lain
+4. **Deploy ulang** - setelah update kode
 
-## Troubleshooting:
-- **Error permissions**: Pastikan sudah authorize semua permissions
-- **Error folder access**: Cek apakah folder ID benar dan accessible
-- **Error upload**: Cek ukuran file (max 5MB) dan format (harus PDF)
-- **Error script**: Cek log di Google Apps Script > Executions
-- **CORS errors**: Normal untuk mode 'no-cors', data tetap terkirim
+### 📝 Tips:
+- Pastikan sudah authorize semua permissions
+- Jangan test dengan "Run" button untuk `doPost` - gunakan `testDoPost` instead
+- Error tersebut normal jika `doPost` dijalankan manual tanpa data
 
-## File Naming Convention:
-File CV akan otomatis dinamai dengan format:
-`NamaLengkap_PosisiDilamar_CV.pdf`
-
-Contoh: `John_Doe_Sales_Officer_Chaneling_SOC_CV.pdf`
-
-## Monitoring:
-- Cek **Google Apps Script > Executions** untuk log aktivitas
-- Cek **Google Drive folder** untuk file yang terupload
-- Cek **Google Spreadsheet** untuk data yang masuk
+Coba jalankan function `testConnections` dan `testDoPost` dulu untuk memastikan semuanya bekerja!
