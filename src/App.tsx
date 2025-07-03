@@ -849,64 +849,70 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
       case 4:
         return (
           <div className="space-y-4 sm:space-y-6">
-            <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
-              <BooleanInput
-                label="Apakah Anda memiliki pengalaman kerja?"
-                name="pengalamanKerja"
-                value={formData.pengalamanKerja}
-                onChange={(value) => updateFormData('pengalamanKerja', value)}
-                icon={Briefcase}
-              />
-              <BooleanInput
-                label="Apakah Anda memiliki pengalaman di bidang leasing?"
-                name="pengalamanLeasing"
-                value={formData.pengalamanLeasing}
-                onChange={(value) => updateFormData('pengalamanLeasing', value)}
-                icon={Briefcase}
-              />
-            </div>
+            {/* Main Question */}
+            <BooleanInput
+              label="Apakah Anda memiliki pengalaman kerja?"
+              name="pengalamanKerja"
+              value={formData.pengalamanKerja}
+              onChange={(value) => updateFormData('pengalamanKerja', value)}
+              icon={Briefcase}
+            />
             
+            {/* Detail Questions - Only show if has work experience */}
             {formData.pengalamanKerja && (
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6 p-4 sm:p-6 bg-blue-50 rounded-2xl border border-blue-200">
-                <div className="lg:col-span-2">
+              <div className="p-4 sm:p-6 bg-blue-50 rounded-2xl border border-blue-200 space-y-4 sm:space-y-6">
+                <div>
                   <h3 className="text-base sm:text-lg font-bold text-blue-900 mb-3 sm:mb-4 flex items-center gap-2">
                     <Briefcase size={20} />
                     Detail Pengalaman Kerja
                   </h3>
                 </div>
-                <FormInput
-                  label="Nama Perusahaan"
-                  name="namaPerusahaan"
-                  value={formData.namaPerusahaan}
-                  onChange={(value) => updateFormData('namaPerusahaan', value)}
-                  error={errors.namaPerusahaan}
-                  icon={Building2}
-                />
-                <FormInput
-                  label="Posisi/Jabatan"
-                  name="posisiJabatan"
-                  value={formData.posisiJabatan}
-                  onChange={(value) => updateFormData('posisiJabatan', value)}
+
+                {/* Experience in Leasing */}
+                <BooleanInput
+                  label="Apakah Anda memiliki pengalaman di bidang leasing?"
+                  name="pengalamanLeasing"
+                  value={formData.pengalamanLeasing}
+                  onChange={(value) => updateFormData('pengalamanLeasing', value)}
                   icon={Briefcase}
                 />
-                <FormInput
-                  label="Periode Kerja"
-                  name="periodeKerja"
-                  value={formData.periodeKerja}
-                  onChange={(value) => updateFormData('periodeKerja', value)}
-                  placeholder="Jan 2020 - Des 2023"
-                  icon={Calendar}
-                />
-                <div className="lg:col-span-2">
+
+                {/* Work Experience Details */}
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 sm:gap-6">
                   <FormInput
-                    label="Deskripsi Tugas"
-                    name="deskripsiTugas"
-                    type="textarea"
-                    value={formData.deskripsiTugas}
-                    onChange={(value) => updateFormData('deskripsiTugas', value)}
-                    rows={3}
-                    icon={FileText}
+                    label="Nama Perusahaan"
+                    name="namaPerusahaan"
+                    value={formData.namaPerusahaan}
+                    onChange={(value) => updateFormData('namaPerusahaan', value)}
+                    error={errors.namaPerusahaan}
+                    icon={Building2}
                   />
+                  <FormInput
+                    label="Posisi/Jabatan"
+                    name="posisiJabatan"
+                    value={formData.posisiJabatan}
+                    onChange={(value) => updateFormData('posisiJabatan', value)}
+                    icon={Briefcase}
+                  />
+                  <FormInput
+                    label="Periode Kerja"
+                    name="periodeKerja"
+                    value={formData.periodeKerja}
+                    onChange={(value) => updateFormData('periodeKerja', value)}
+                    placeholder="Jan 2020 - Des 2023"
+                    icon={Calendar}
+                  />
+                  <div className="lg:col-span-2">
+                    <FormInput
+                      label="Deskripsi Tugas"
+                      name="deskripsiTugas"
+                      type="textarea"
+                      value={formData.deskripsiTugas}
+                      onChange={(value) => updateFormData('deskripsiTugas', value)}
+                      rows={3}
+                      icon={FileText}
+                    />
+                  </div>
                 </div>
               </div>
             )}
