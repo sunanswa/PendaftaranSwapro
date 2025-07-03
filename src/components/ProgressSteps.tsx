@@ -14,27 +14,27 @@ interface ProgressStepsProps {
 
 const ProgressSteps: React.FC<ProgressStepsProps> = ({ steps, currentStep }) => {
   return (
-    <div className="mb-10">
+    <div className="mb-8 sm:mb-10">
       {/* Mobile Progress */}
-      <div className="block lg:hidden mb-8">
-        <div className="flex justify-between items-center mb-4">
-          <span className="text-sm font-bold text-gray-600">
+      <div className="block lg:hidden mb-6 sm:mb-8">
+        <div className="flex justify-between items-center mb-3 sm:mb-4">
+          <span className="text-xs sm:text-sm font-bold text-gray-600">
             Langkah {currentStep + 1} dari {steps.length}
           </span>
-          <span className="text-sm text-gray-500 font-semibold">
+          <span className="text-xs sm:text-sm text-gray-500 font-semibold">
             {Math.round(((currentStep + 1) / steps.length) * 100)}%
           </span>
         </div>
-        <div className="w-full bg-gray-200 rounded-full h-3 shadow-inner">
+        <div className="w-full bg-gray-200 rounded-full h-2 sm:h-3 shadow-inner">
           <div
-            className={`bg-gradient-to-r ${steps[currentStep].color} h-3 rounded-full transition-all duration-500 shadow-lg`}
+            className={`bg-gradient-to-r ${steps[currentStep].color} h-2 sm:h-3 rounded-full transition-all duration-500 shadow-lg`}
             style={{ width: `${((currentStep + 1) / steps.length) * 100}%` }}
           />
         </div>
-        <div className="text-center mt-4">
-          <div className={`inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r ${steps[currentStep].color} text-white rounded-2xl shadow-lg`}>
-            {React.createElement(steps[currentStep].icon, { size: 20 })}
-            <span className="font-bold">{steps[currentStep].title}</span>
+        <div className="text-center mt-3 sm:mt-4">
+          <div className={`inline-flex items-center gap-2 px-3 sm:px-4 py-2 bg-gradient-to-r ${steps[currentStep].color} text-white rounded-2xl shadow-lg`}>
+            {React.createElement(steps[currentStep].icon, { size: 16 })}
+            <span className="font-bold text-sm sm:text-base">{steps[currentStep].title}</span>
           </div>
         </div>
       </div>

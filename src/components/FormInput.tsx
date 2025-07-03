@@ -35,22 +35,22 @@ const FormInput: React.FC<FormInputProps> = ({
   };
 
   const inputClasses = `
-    w-full px-4 py-4 border-2 rounded-2xl transition-all duration-300 
+    w-full px-3 sm:px-4 py-3 sm:py-4 border-2 rounded-2xl transition-all duration-300 
     focus:outline-none focus:ring-4 focus:ring-rose-200 focus:border-rose-400
     ${error 
       ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-200' 
       : 'border-gray-200 bg-white hover:border-rose-300 hover:shadow-md'
     }
-    text-gray-900 placeholder-gray-400 font-medium
+    text-gray-900 placeholder-gray-400 font-medium text-sm sm:text-base
   `;
 
   return (
-    <div className="space-y-3">
-      <label className="block text-sm font-bold text-gray-700">
+    <div className="space-y-2 sm:space-y-3">
+      <label className="block text-xs sm:text-sm font-bold text-gray-700">
         <div className="flex items-center gap-2">
           {Icon && (
-            <div className="p-1.5 bg-rose-100 rounded-lg">
-              <Icon size={16} className="text-rose-600" />
+            <div className="p-1 sm:p-1.5 bg-rose-100 rounded-lg">
+              <Icon size={14} className="text-rose-600" />
             </div>
           )}
           {label}
@@ -95,8 +95,8 @@ const FormInput: React.FC<FormInputProps> = ({
       )}
       
       {error && (
-        <p className="text-sm text-red-600 flex items-center gap-2 bg-red-50 p-3 rounded-xl border border-red-200">
-          <AlertCircle size={16} />
+        <p className="text-xs sm:text-sm text-red-600 flex items-center gap-2 bg-red-50 p-2 sm:p-3 rounded-xl border border-red-200">
+          <AlertCircle size={14} />
           {error}
         </p>
       )}
