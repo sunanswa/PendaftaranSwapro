@@ -14,7 +14,13 @@ import {
   TrendingUp,
   CheckCircle,
   Play,
-  Handshake
+  Handshake,
+  Phone,
+  Headphones,
+  UserCheck,
+  Globe,
+  Briefcase,
+  Settings
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -34,10 +40,37 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
   }, []);
 
   const stats = [
-    { icon: Users, number: '1,500+', label: 'Karyawan Bergabung', color: 'from-blue-400 to-blue-500' },
-    { icon: Handshake, number: '50+', label: 'Mitra Perusahaan', color: 'from-orange-400 to-orange-500' },
-    { icon: Award, number: '10+', label: 'Tahun Pengalaman', color: 'from-purple-400 to-purple-500' },
-    { icon: Star, number: '4.8/5', label: 'Rating Kepuasan', color: 'from-green-400 to-green-500' }
+    { icon: Users, number: '1,000+', label: 'Tenaga Kerja Aktif', color: 'from-blue-400 to-blue-500' },
+    { icon: Handshake, number: '50+', label: 'Klien Terpercaya', color: 'from-orange-400 to-orange-500' },
+    { icon: Award, number: '15+', label: 'Tahun Pengalaman', color: 'from-purple-400 to-purple-500' },
+    { icon: Globe, number: '70+', label: 'Kota Jangkauan', color: 'from-green-400 to-green-500' }
+  ];
+
+  const services = [
+    { 
+      title: 'Penyediaan SDM', 
+      icon: Users, 
+      description: 'Solusi tenaga kerja berkualitas untuk berbagai industri',
+      color: 'from-blue-400 to-blue-500'
+    },
+    { 
+      title: 'Telemarketing & Call Center', 
+      icon: Headphones, 
+      description: 'Layanan terintegrasi dari perangkat hingga manajemen pelanggan',
+      color: 'from-orange-400 to-orange-500'
+    },
+    { 
+      title: 'Layanan Alihdaya', 
+      icon: Settings, 
+      description: 'Solusi outsourcing efektif dan efisien untuk perusahaan',
+      color: 'from-purple-400 to-purple-500'
+    },
+    { 
+      title: 'Rekrutmen Profesional', 
+      icon: UserCheck, 
+      description: 'Layanan rekrutmen untuk Financial & Non-Financial Industry',
+      color: 'from-green-400 to-green-500'
+    }
   ];
 
   const positions = [
@@ -56,47 +89,47 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
       color: 'from-orange-400 to-orange-500'
     },
     { 
-      title: 'Sales Advisor Used Car', 
-      icon: Users, 
-      locations: 1, 
-      type: 'Sales & Advisory',
+      title: 'Telemarketing Specialist', 
+      icon: Phone, 
+      locations: 2, 
+      type: 'Call Center & Communication',
       color: 'from-purple-400 to-purple-500'
     },
     { 
-      title: 'Telemarketing', 
+      title: 'Recovery Officer', 
       icon: Zap, 
       locations: 2, 
-      type: 'Marketing & Communication',
+      type: 'Collection & Recovery',
       color: 'from-green-400 to-green-500'
     }
   ];
 
   const benefits = [
-    { icon: Shield, title: 'Jaminan Kesehatan', desc: 'BPJS & Asuransi Swasta' },
+    { icon: Shield, title: 'Jaminan Kesehatan', desc: 'BPJS & Asuransi Swasta Lengkap' },
     { icon: TrendingUp, title: 'Jenjang Karir Jelas', desc: 'Program Pengembangan Berkelanjutan' },
-    { icon: Award, title: 'Bonus & Insentif', desc: 'Reward Berdasarkan Performa' },
-    { icon: Clock, title: 'Work-Life Balance', desc: 'Jam Kerja Fleksibel' },
-    { icon: Users, title: 'Tim Solid', desc: 'Lingkungan Kerja Supportif' },
-    { icon: Heart, title: 'Employee Wellness', desc: 'Program Kesehatan Mental' }
+    { icon: Award, title: 'Bonus & Insentif', desc: 'Reward Berdasarkan Performa Kerja' },
+    { icon: Clock, title: 'Work-Life Balance', desc: 'Jam Kerja Fleksibel & Cuti Tahunan' },
+    { icon: Users, title: 'Tim Profesional', desc: 'Lingkungan Kerja Supportif & Kolaboratif' },
+    { icon: Heart, title: 'Employee Wellness', desc: 'Program Kesehatan Mental & Fisik' }
   ];
 
   const testimonials = [
     {
       name: 'Sarah Wijaya',
-      position: 'Sales Officer',
-      text: 'SWAPRO memberikan kesempatan karir yang luar biasa. Tim yang solid dan lingkungan kerja yang mendukung.',
+      position: 'Sales Officer - Financial Industry',
+      text: 'SWAPRO memberikan kesempatan karir yang luar biasa. Dengan pengalaman 15+ tahun, mereka benar-benar memahami kebutuhan industri dan karyawan.',
       rating: 5
     },
     {
       name: 'Ahmad Rizki',
-      position: 'Credit Officer',
-      text: 'Pengalaman kerja di SWAPRO sangat memuaskan. Benefit yang kompetitif dan jenjang karir yang jelas.',
+      position: 'Credit Officer - Banking Sector',
+      text: 'Bergabung dengan SWAPRO adalah keputusan terbaik. Jangkauan nasional di 70+ kota memberikan peluang karir yang sangat luas.',
       rating: 5
     },
     {
       name: 'Maya Sari',
-      position: 'Relationship Officer',
-      text: 'Bergabung dengan SWAPRO adalah keputusan terbaik. Work-life balance yang baik dan tim yang profesional.',
+      position: 'Call Center Supervisor',
+      text: 'Layanan terintegrasi SWAPRO dari teknologi hingga manajemen sangat profesional. Tim yang solid dan benefit yang kompetitif.',
       rating: 5
     }
   ];
@@ -126,11 +159,21 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
             </h1>
 
             {/* Subtitle */}
-            <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-8 sm:mb-12 max-w-3xl mx-auto leading-relaxed">
-              Wujudkan karir impian Anda bersama kami. Bergabunglah dengan tim profesional yang 
-              <span className="font-semibold text-blue-600"> inovatif</span> dan 
-              <span className="font-semibold text-orange-600"> berpengalaman</span>
+            <p className="text-lg sm:text-xl lg:text-2xl text-gray-600 mb-6 sm:mb-8 max-w-4xl mx-auto leading-relaxed">
+              Bergabunglah dengan perusahaan penyedia SDM terpercaya dengan 
+              <span className="font-semibold text-blue-600"> 15+ tahun pengalaman</span> melayani 
+              <span className="font-semibold text-orange-600"> Financial & Non-Financial Industry</span>
             </p>
+
+            {/* Company Description */}
+            <div className="bg-white/80 backdrop-blur-sm rounded-3xl p-6 sm:p-8 mb-8 sm:mb-12 max-w-4xl mx-auto shadow-lg border border-white/20">
+              <p className="text-base sm:text-lg text-gray-700 leading-relaxed">
+                Berawal dari melayani <span className="font-semibold text-blue-600">SWATAMA Group</span> sejak 2008, 
+                kini SWAPRO telah berkembang menjadi perusahaan alihdaya terdepan dengan 
+                <span className="font-semibold text-orange-600"> jangkauan nasional di 70+ kota</span> dan 
+                <span className="font-semibold text-purple-600"> perwakilan di 10 kota besar Indonesia</span>.
+              </p>
+            </div>
 
             {/* CTA Button */}
             <button
@@ -161,15 +204,46 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
         </div>
       </section>
 
-      {/* Positions Section */}
+      {/* Services Section */}
       <section className="py-16 sm:py-20 bg-white/50 backdrop-blur-sm">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Layanan Terintegrasi SWAPRO
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              Dari penyediaan SDM hingga layanan alihdaya, kami memberikan solusi terbaik untuk kebutuhan bisnis Anda
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8">
+            {services.map((service, index) => (
+              <div 
+                key={index}
+                className="bg-white rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-300 transform hover:scale-105 border border-gray-100"
+              >
+                <div className={`w-16 sm:w-20 h-16 sm:h-20 bg-gradient-to-r ${service.color} rounded-2xl flex items-center justify-center mb-4 sm:mb-6 mx-auto`}>
+                  <service.icon size={32} className="text-white" />
+                </div>
+                <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-2 sm:mb-3 text-center">
+                  {service.title}
+                </h3>
+                <p className="text-sm text-gray-600 text-center leading-relaxed">{service.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Positions Section */}
+      <section className="py-16 sm:py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
               Posisi yang Tersedia
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Temukan posisi yang sesuai dengan passion dan keahlian Anda
+              Temukan posisi yang sesuai dengan passion dan keahlian Anda di berbagai industri
             </p>
           </div>
 
@@ -197,14 +271,14 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
       </section>
 
       {/* Benefits Section */}
-      <section className="py-16 sm:py-20">
+      <section className="py-16 sm:py-20 bg-white/50 backdrop-blur-sm">
         <div className="container mx-auto px-4">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
               Mengapa Bergabung dengan SWAPRO?
             </h2>
-            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Nikmati berbagai benefit dan fasilitas terbaik untuk mendukung karir Anda
+            <p className="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto">
+              Nikmati berbagai benefit dan fasilitas terbaik dari perusahaan dengan pengalaman 15+ tahun
             </p>
           </div>
 
@@ -227,6 +301,50 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
         </div>
       </section>
 
+      {/* Company Journey Section */}
+      <section className="py-16 sm:py-20">
+        <div className="container mx-auto px-4">
+          <div className="text-center mb-12 sm:mb-16">
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900 mb-4 sm:mb-6">
+              Perjalanan SWAPRO
+            </h2>
+            <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
+              Dari layanan sederhana hingga menjadi pemimpin industri alihdaya
+            </p>
+          </div>
+
+          <div className="max-w-4xl mx-auto">
+            <div className="bg-gradient-to-r from-blue-50 to-purple-50 rounded-3xl p-8 sm:p-12 shadow-lg border border-gray-100">
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Building2 size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">2008 - Awal Mula</h3>
+                  <p className="text-gray-600">Melayani SWATAMA Group dalam penyediaan SDM</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gradient-to-r from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Headphones size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Ekspansi Layanan</h3>
+                  <p className="text-gray-600">Mengembangkan telemarketing & call center terintegrasi</p>
+                </div>
+                
+                <div className="text-center">
+                  <div className="w-20 h-20 bg-gradient-to-r from-purple-500 to-purple-600 rounded-2xl flex items-center justify-center mx-auto mb-4">
+                    <Globe size={32} className="text-white" />
+                  </div>
+                  <h3 className="text-xl font-bold text-gray-900 mb-2">Jangkauan Nasional</h3>
+                  <p className="text-gray-600">Melayani 70+ kota dengan 10 perwakilan besar</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Testimonials Section */}
       <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-50 to-purple-50">
         <div className="container mx-auto px-4">
@@ -235,7 +353,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
               Kata Mereka tentang SWAPRO
             </h2>
             <p className="text-lg sm:text-xl text-gray-600 max-w-2xl mx-auto">
-              Dengarkan pengalaman langsung dari tim SWAPRO
+              Dengarkan pengalaman langsung dari profesional yang bergabung dengan SWAPRO
             </p>
           </div>
 
@@ -283,10 +401,10 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
       <section className="py-16 sm:py-20 bg-gradient-to-r from-blue-600 to-orange-600">
         <div className="container mx-auto px-4 text-center">
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6">
-            Siap Memulai Karir Baru?
+            Siap Bergabung dengan SWAPRO?
           </h2>
-          <p className="text-lg sm:text-xl text-blue-100 mb-8 sm:mb-12 max-w-2xl mx-auto">
-            Bergabunglah dengan ribuan profesional yang telah mempercayai SWAPRO sebagai tempat berkarir
+          <p className="text-lg sm:text-xl text-blue-100 mb-8 sm:mb-12 max-w-3xl mx-auto">
+            Bergabunglah dengan ribuan profesional yang telah mempercayai SWAPRO sebagai partner karir terbaik selama 15+ tahun
           </p>
           
           <button
@@ -299,7 +417,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
           </button>
 
           <p className="text-blue-100 text-sm sm:text-base mt-6 sm:mt-8">
-            Proses pendaftaran hanya membutuhkan 5-10 menit
+            Proses pendaftaran hanya membutuhkan 5-10 menit • Jangkauan nasional 70+ kota
           </p>
         </div>
       </section>
