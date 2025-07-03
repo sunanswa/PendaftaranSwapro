@@ -164,10 +164,28 @@ function App() {
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type === 'application/pdf') {
-      handleInputChange('cvFile', file);
+      if (file.size <= 5 * 1024 * 1024) { // 5MB limit
+        handleInputChange('cvFile', file);
+      } else {
+        setErrors(prev => ({ ...prev, cvFile: 'File CV tidak boleh lebih dari 5MB' }));
+      }
     } else if (file) {
       setErrors(prev => ({ ...prev, cvFile: 'File harus berformat PDF' }));
     }
+  };
+
+  const fileToBase64 = (file: File): Promise<string> => {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => {
+        const result = reader.result as string;
+        // Remove data:application/pdf;base64, prefix
+        const base64 = result.split(',')[1];
+        resolve(base64);
+      };
+      reader.onerror = error => reject(error);
+    });
   };
 
   const validateSection = (sectionIndex: number): boolean => {
@@ -245,6 +263,12 @@ function App() {
     setSubmitStatus('idle');
 
     try {
+      // Convert CV file to base64 if exists
+      let cvFileData = '';
+      if (formData.cvFile) {
+        cvFileData = await fileToBase64(formData.cvFile);
+      }
+
       // Prepare data for Google Sheets
       const submissionData = {
         timestamp: new Date().toISOString(),
@@ -289,7 +313,8 @@ function App() {
         npwp: formData.npwp ? 'Ya' : 'Tidak',
         riwayatBurukKredit: formData.riwayatBurukKredit ? 'Ya' : 'Tidak',
         alasanMelamar: formData.alasanMelamar,
-        cvFileName: formData.cvFile?.name || 'Tidak ada file'
+        cvFileName: formData.cvFile?.name || 'Tidak ada file',
+        cvFileData: cvFileData // Base64 encoded file data
       };
 
       // Submit to Google Sheets
@@ -360,13 +385,15 @@ function App() {
     field, 
     type = 'text', 
     required = false, 
-    options = [] 
+    options = [],
+    step
   }: {
     label: string;
     field: keyof FormData;
     type?: string;
     required?: boolean;
     options?: string[];
+    step?: string;
   }) => (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-gray-700">
@@ -398,6 +425,7 @@ function App() {
       ) : (
         <input
           type={type}
+          step={step}
           value={formData[field] as string}
           onChange={(e) => handleInputChange(field, e.target.value)}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
@@ -473,7 +501,7 @@ function App() {
         {submitStatus === 'success' && (
           <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center gap-2">
             <CheckCircle size={20} />
-            <span>Formulir berhasil dikirim! Data Anda telah tersimpan di sistem kami.</span>
+            <span>Formulir berhasil dikirim! Data Anda telah tersimpan di sistem kami dan CV telah diupload ke Google Drive.</span>
           </div>
         )}
 
@@ -729,6 +757,14 @@ function App() {
                       <AlertCircle size={16} />
                       {errors.cvFile}
                     </p>
+                  )}
+                  {formData.cvFile && (
+                    <div className="mt-2 p-3 bg-green-50 border border-green-200 rounded-lg">
+                      <p className="text-sm text-green-700 flex items-center gap-2">
+                        <CheckCircle size={16} />
+                        File CV siap diupload: {formData.cvFile.name} ({(formData.cvFile.size / 1024 / 1024).toFixed(2)} MB)
+                      </p>
+                    </div>
                   )}
                 </div>
               </div>
