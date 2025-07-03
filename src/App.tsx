@@ -12,7 +12,8 @@ import {
   School,
   Building,
   CheckCircle,
-  AlertCircle
+  AlertCircle,
+  Send
 } from 'lucide-react';
 
 interface FormData {
@@ -121,6 +122,8 @@ function App() {
 
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [currentSection, setCurrentSection] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
 
   const sections = [
     { title: 'Data Pribadi', icon: User },
@@ -210,12 +213,145 @@ function App() {
     setCurrentSection(prev => Math.max(prev - 1, 0));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const submitToGoogleSheets = async (data: any) => {
+    // Replace this URL with your Google Apps Script web app URL
+    const GOOGLE_SCRIPT_URL = 'YOUR_GOOGLE_APPS_SCRIPT_URL_HERE';
+    
+    try {
+      const response = await fetch(GOOGLE_SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+      });
+      
+      return true;
+    } catch (error) {
+      console.error('Error submitting to Google Sheets:', error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (validateSection(currentSection)) {
-      // Here you would typically send the data to your backend
-      console.log('Form submitted:', formData);
-      alert('Formulir berhasil dikirim!');
+    
+    if (!validateSection(currentSection)) {
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitStatus('idle');
+
+    try {
+      // Prepare data for Google Sheets
+      const submissionData = {
+        timestamp: new Date().toISOString(),
+        posisiDilamar: formData.posisiDilamar,
+        penempatan: formData.penempatan,
+        namaLengkap: formData.namaLengkap,
+        nik: formData.nik,
+        noHp: formData.noHp,
+        tempatLahir: formData.tempatLahir,
+        tanggalLahir: formData.tanggalLahir,
+        umur: formData.umur,
+        jenisKelamin: formData.jenisKelamin,
+        statusPerkawinan: formData.statusPerkawinan,
+        agama: formData.agama,
+        namaAyah: formData.namaAyah,
+        namaIbu: formData.namaIbu,
+        alamatKtp: formData.alamatKtp,
+        alamatDomisili: formData.alamatDomisili,
+        rtRw: formData.rtRw,
+        nomorRumah: formData.nomorRumah,
+        kelurahan: formData.kelurahan,
+        kecamatan: formData.kecamatan,
+        kota: formData.kota,
+        kodePos: formData.kodePos,
+        tingkatPendidikan: formData.tingkatPendidikan,
+        namaSekolah: formData.namaSekolah,
+        jurusan: formData.jurusan,
+        tahunMasuk: formData.tahunMasuk,
+        tahunLulus: formData.tahunLulus,
+        ipk: formData.ipk,
+        pengalamanKerja: formData.pengalamanKerja ? 'Ya' : 'Tidak',
+        pengalamanLeasing: formData.pengalamanLeasing ? 'Ya' : 'Tidak',
+        namaPerusahaan: formData.namaPerusahaan,
+        posisiJabatan: formData.posisiJabatan,
+        periodeKerja: formData.periodeKerja,
+        deskripsiTugas: formData.deskripsiTugas,
+        kendaraanPribadi: formData.kendaraanPribadi ? 'Ya' : 'Tidak',
+        ktpAsli: formData.ktpAsli ? 'Ya' : 'Tidak',
+        simC: formData.simC ? 'Ya' : 'Tidak',
+        simA: formData.simA ? 'Ya' : 'Tidak',
+        skck: formData.skck ? 'Ya' : 'Tidak',
+        npwp: formData.npwp ? 'Ya' : 'Tidak',
+        riwayatBurukKredit: formData.riwayatBurukKredit ? 'Ya' : 'Tidak',
+        alasanMelamar: formData.alasanMelamar,
+        cvFileName: formData.cvFile?.name || 'Tidak ada file'
+      };
+
+      // Submit to Google Sheets
+      await submitToGoogleSheets(submissionData);
+      
+      setSubmitStatus('success');
+      
+      // Reset form after successful submission
+      setTimeout(() => {
+        setFormData({
+          posisiDilamar: '',
+          penempatan: '',
+          namaLengkap: '',
+          nik: '',
+          noHp: '',
+          tempatLahir: '',
+          tanggalLahir: '',
+          umur: '',
+          jenisKelamin: '',
+          statusPerkawinan: '',
+          agama: '',
+          namaAyah: '',
+          namaIbu: '',
+          alamatKtp: '',
+          alamatDomisili: '',
+          rtRw: '',
+          nomorRumah: '',
+          kelurahan: '',
+          kecamatan: '',
+          kota: '',
+          kodePos: '',
+          tingkatPendidikan: '',
+          namaSekolah: '',
+          jurusan: '',
+          tahunMasuk: '',
+          tahunLulus: '',
+          ipk: '',
+          pengalamanKerja: false,
+          pengalamanLeasing: false,
+          namaPerusahaan: '',
+          posisiJabatan: '',
+          periodeKerja: '',
+          deskripsiTugas: '',
+          kendaraanPribadi: false,
+          ktpAsli: false,
+          simC: false,
+          simA: false,
+          skck: false,
+          npwp: false,
+          riwayatBurukKredit: false,
+          alasanMelamar: '',
+          cvFile: null,
+        });
+        setCurrentSection(0);
+        setSubmitStatus('idle');
+      }, 3000);
+      
+    } catch (error) {
+      console.error('Submission error:', error);
+      setSubmitStatus('error');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
@@ -316,8 +452,15 @@ function App() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 py-8 px-4">
       <div className="max-w-4xl mx-auto">
-        {/* Header */}
+        {/* Header with Logo */}
         <div className="text-center mb-8">
+          <div className="flex justify-center mb-6">
+            <img 
+              src="/swapro.png" 
+              alt="SWAPRO Logo" 
+              className="h-16 w-auto"
+            />
+          </div>
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
             Formulir Pendaftaran Karyawan
           </h1>
@@ -325,6 +468,21 @@ function App() {
             Lengkapi semua informasi dengan benar dan akurat
           </p>
         </div>
+
+        {/* Success/Error Messages */}
+        {submitStatus === 'success' && (
+          <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center gap-2">
+            <CheckCircle size={20} />
+            <span>Formulir berhasil dikirim! Data Anda telah tersimpan di sistem kami.</span>
+          </div>
+        )}
+
+        {submitStatus === 'error' && (
+          <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center gap-2">
+            <AlertCircle size={20} />
+            <span>Terjadi kesalahan saat mengirim formulir. Silakan coba lagi.</span>
+          </div>
+        )}
 
         {/* Progress Bar */}
         <div className="mb-8">
@@ -595,10 +753,24 @@ function App() {
             {currentSection === sections.length - 1 ? (
               <button
                 type="submit"
-                className="px-8 py-3 bg-green-600 text-white rounded-lg font-medium hover:bg-green-700 transition-colors flex items-center gap-2"
+                disabled={isSubmitting}
+                className={`px-8 py-3 rounded-lg font-medium transition-colors flex items-center gap-2 ${
+                  isSubmitting
+                    ? 'bg-gray-400 text-white cursor-not-allowed'
+                    : 'bg-green-600 text-white hover:bg-green-700'
+                }`}
               >
-                <CheckCircle size={20} />
-                Kirim Formulir
+                {isSubmitting ? (
+                  <>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                    Mengirim...
+                  </>
+                ) : (
+                  <>
+                    <Send size={20} />
+                    Kirim Formulir
+                  </>
+                )}
               </button>
             ) : (
               <button
