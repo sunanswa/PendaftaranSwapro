@@ -124,76 +124,70 @@ const initialFormData: FormData = {
   cvFile: null
 };
 
-// Position mapping with automatic placement
+// Updated position mapping with proper capitalization and correct placements
 const positionPlacements = {
-  // Existing positions with multiple placements
+  // Multiple positions with shared placements
   'Sales Officer Chaneling (SOC)': [
     'ADIRA TEBET MOTOR',
-    'ADIRA SUNTER',
-    'ADIRA KELAPA GADING',
-    'ADIRA CEMPAKA PUTIH',
-    'ADIRA FATMAWATI',
-    'ADIRA RADIO DALAM',
-    'ADIRA CILANDAK',
-    'ADIRA PONDOK INDAH',
-    'ADIRA KEMANG',
-    'ADIRA WARUNG BUNCIT',
-    'ADIRA PASAR MINGGU',
-    'ADIRA KALIBATA',
-    'ADIRA MAMPANG',
-    'ADIRA KUNINGAN',
-    'ADIRA PANCORAN',
-    'ADIRA BLOK M',
-    'ADIRA SENAYAN',
-    'ADIRA SUDIRMAN',
-    'ADIRA THAMRIN',
-    'ADIRA MENTENG'
+    'ADIRA TEBET MOBIL',
+    'ADIRA KELAPA GADING MOTOR',
+    'ADIRA KELAPA GADING MOBIL',
+    'ADIRA KETAPANG',
+    'ADIRA PONDOK GEDE'
   ],
-  'Collection Officer (CO)': [
+  'Sales Officer Mobile (SOM)': [
     'ADIRA TEBET MOTOR',
-    'ADIRA SUNTER',
-    'ADIRA KELAPA GADING',
-    'ADIRA CEMPAKA PUTIH',
-    'ADIRA FATMAWATI',
-    'ADIRA RADIO DALAM',
-    'ADIRA CILANDAK',
-    'ADIRA PONDOK INDAH',
-    'ADIRA KEMANG',
-    'ADIRA WARUNG BUNCIT',
-    'ADIRA PASAR MINGGU',
-    'ADIRA KALIBATA',
-    'ADIRA MAMPANG',
-    'ADIRA KUNINGAN',
-    'ADIRA PANCORAN',
-    'ADIRA BLOK M',
-    'ADIRA SENAYAN',
-    'ADIRA SUDIRMAN',
-    'ADIRA THAMRIN',
-    'ADIRA MENTENG'
+    'ADIRA TEBET MOBIL',
+    'ADIRA KELAPA GADING MOTOR',
+    'ADIRA KELAPA GADING MOBIL',
+    'ADIRA KETAPANG',
+    'ADIRA PONDOK GEDE'
   ],
-  'Surveyor': [
+  'Relationship Officer (RO)': [
     'ADIRA TEBET MOTOR',
-    'ADIRA SUNTER',
-    'ADIRA KELAPA GADING',
-    'ADIRA CEMPAKA PUTIH',
-    'ADIRA FATMAWATI',
-    'ADIRA RADIO DALAM',
-    'ADIRA CILANDAK',
-    'ADIRA PONDOK INDAH',
-    'ADIRA KEMANG',
-    'ADIRA WARUNG BUNCIT',
-    'ADIRA PASAR MINGGU',
-    'ADIRA KALIBATA',
-    'ADIRA MAMPANG',
-    'ADIRA KUNINGAN',
-    'ADIRA PANCORAN',
-    'ADIRA BLOK M',
-    'ADIRA SENAYAN',
-    'ADIRA SUDIRMAN',
-    'ADIRA THAMRIN',
-    'ADIRA MENTENG'
+    'ADIRA TEBET MOBIL',
+    'ADIRA KELAPA GADING MOTOR',
+    'ADIRA KELAPA GADING MOBIL',
+    'ADIRA KETAPANG',
+    'ADIRA PONDOK GEDE'
   ],
-  // New positions with fixed placements
+  'Remedial Collection (REMOF)': [
+    'ADIRA TEBET MOTOR',
+    'ADIRA TEBET MOBIL',
+    'ADIRA KELAPA GADING MOTOR',
+    'ADIRA KELAPA GADING MOBIL',
+    'ADIRA KETAPANG',
+    'ADIRA PONDOK GEDE'
+  ],
+  'Problem Account Officer (PAO)': [
+    'ADIRA TEBET MOTOR',
+    'ADIRA TEBET MOBIL',
+    'ADIRA KELAPA GADING MOTOR',
+    'ADIRA KELAPA GADING MOBIL',
+    'ADIRA KETAPANG',
+    'ADIRA PONDOK GEDE'
+  ],
+  
+  // Single position with single placement
+  'Sales Force (SF)': [
+    'ADIRA TEBET MOTOR'
+  ],
+  
+  // Positions with SMSF placements
+  'Credit Marketing Officer': [
+    'SMSF JAKARTA TIMUR',
+    'SMSF JAKARTA UTARA'
+  ],
+  'Recovery': [
+    'SMSF JAKARTA TIMUR',
+    'SMSF JAKARTA UTARA'
+  ],
+  'Credit Relation Executive / Credit Relation Officer': [
+    'SMSF JAKARTA TIMUR',
+    'SMSF JAKARTA UTARA'
+  ],
+  
+  // Specific single placements
   'Sales Advisor/Sales Executive Used Car': ['HO Ampera'],
   'Sourcing Consultant/Mekanik Inspektor': ['JABODETABEK'],
   'Sales Multiguna': ['JABODETABEK'],
@@ -448,6 +442,15 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 flex items-center justify-center p-4">
         <div className="max-w-2xl w-full">
           <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 text-center">
+            {/* Logo */}
+            <div className="mb-6 sm:mb-8">
+              <img 
+                src="/swapro copy copy.png" 
+                alt="SWAPRO Logo" 
+                className="h-16 sm:h-20 mx-auto mb-4 sm:mb-6"
+              />
+            </div>
+
             <div className="mb-6 sm:mb-8">
               <div className="w-20 sm:w-24 h-20 sm:h-24 bg-gradient-to-r from-emerald-500 to-teal-500 rounded-full flex items-center justify-center mx-auto mb-4 sm:mb-6 shadow-lg">
                 <CheckCircle size={40} className="text-white" />
@@ -990,12 +993,14 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
     <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
       <div className="container mx-auto px-4 py-6 sm:py-8">
         <div className="max-w-4xl mx-auto">
-          {/* Header */}
+          {/* Header with Logo */}
           <div className="text-center mb-6 sm:mb-8">
             <div className="flex items-center justify-center mb-4 sm:mb-6">
-              <div className="w-12 sm:w-16 h-12 sm:h-16 bg-gradient-to-r from-rose-500 to-pink-500 rounded-2xl flex items-center justify-center shadow-lg">
-                <User className="text-white" size={24} />
-              </div>
+              <img 
+                src="/swapro copy copy.png" 
+                alt="SWAPRO Logo" 
+                className="h-16 sm:h-20 lg:h-24"
+              />
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
               Formulir Pendaftaran Karyawan
