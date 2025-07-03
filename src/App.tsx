@@ -22,6 +22,9 @@ import {
 import ProgressSteps from './components/ProgressSteps';
 import FormInput from './components/FormInput';
 import BooleanInput from './components/BooleanInput';
+import SplashScreen from './components/SplashScreen';
+import LandingPage from './components/LandingPage';
+import LoadingScreen from './components/LoadingScreen';
 
 interface FormData {
   // Step 1: Posisi & Penempatan
@@ -195,12 +198,14 @@ const positionPlacements = {
   'Telemarketing WOM': ['Tangerang City']
 };
 
+type AppState = 'splash' | 'landing' | 'loading' | 'form' | 'submitted';
+
 const App: React.FC = () => {
+  const [appState, setAppState] = useState<AppState>('splash');
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormData>(initialFormData);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [isSubmitted, setIsSubmitted] = useState(false);
   const [availablePlacements, setAvailablePlacements] = useState<string[]>([]);
 
   // Update available placements when position changes
@@ -226,34 +231,46 @@ const App: React.FC = () => {
     { 
       title: 'Posisi & Penempatan', 
       icon: Building2, 
-      color: 'from-blue-500 to-blue-600' 
+      color: 'from-blue-400 to-blue-500' 
     },
     { 
       title: 'Data Pribadi', 
       icon: User, 
-      color: 'from-purple-500 to-purple-600' 
+      color: 'from-purple-400 to-purple-500' 
     },
     { 
       title: 'Alamat', 
       icon: MapPin, 
-      color: 'from-green-500 to-green-600' 
+      color: 'from-green-400 to-green-500' 
     },
     { 
       title: 'Pendidikan', 
       icon: GraduationCap, 
-      color: 'from-orange-500 to-orange-600' 
+      color: 'from-orange-400 to-orange-500' 
     },
     { 
       title: 'Pengalaman', 
       icon: Briefcase, 
-      color: 'from-red-500 to-red-600' 
+      color: 'from-red-400 to-red-500' 
     },
     { 
       title: 'Dokumen', 
       icon: FileText, 
-      color: 'from-teal-500 to-teal-600' 
+      color: 'from-teal-400 to-teal-500' 
     }
   ];
+
+  const handleSplashComplete = () => {
+    setAppState('landing');
+  };
+
+  const handleStartApplication = () => {
+    setAppState('loading');
+    // Simulate loading time
+    setTimeout(() => {
+      setAppState('form');
+    }, 3000);
+  };
 
   const updateFormData = (field: keyof FormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
@@ -401,7 +418,7 @@ const App: React.FC = () => {
       const result = await response.json();
 
       if (result.success) {
-        setIsSubmitted(true);
+        setAppState('submitted');
       } else {
         if (result.isDuplicate) {
           alert('NIK sudah terdaftar! Anda sudah pernah mendaftar sebelumnya.');
@@ -437,7 +454,20 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
     return `https://wa.me/${phoneNumber}?text=${message}`;
   };
 
-  if (isSubmitted) {
+  // Render different states
+  if (appState === 'splash') {
+    return <SplashScreen onComplete={handleSplashComplete} />;
+  }
+
+  if (appState === 'landing') {
+    return <LandingPage onStartApplication={handleStartApplication} />;
+  }
+
+  if (appState === 'loading') {
+    return <LoadingScreen isLoading={true} />;
+  }
+
+  if (appState === 'submitted') {
     return (
       <div className="min-h-screen bg-gradient-to-br from-emerald-50 via-teal-50 to-cyan-50 flex items-center justify-center p-4">
         <div className="max-w-2xl w-full">
@@ -445,7 +475,7 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
             {/* Logo */}
             <div className="mb-6 sm:mb-8">
               <img 
-                src="/swapro copy copy.png" 
+                src="/swapro copy.png" 
                 alt="SWAPRO Logo" 
                 className="h-16 sm:h-20 mx-auto mb-4 sm:mb-6"
               />
@@ -957,8 +987,8 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
             <div className="space-y-2 sm:space-y-3">
               <label className="block text-xs sm:text-sm font-bold text-gray-700">
                 <div className="flex items-center gap-2">
-                  <div className="p-1 sm:p-1.5 bg-rose-100 rounded-lg">
-                    <FileText size={14} className="text-rose-600" />
+                  <div className="p-1 sm:p-1.5 bg-blue-100 rounded-lg">
+                    <FileText size={14} className="text-blue-600" />
                   </div>
                   Upload CV (PDF, Maksimal 5MB)
                 </div>
@@ -967,7 +997,7 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
                 type="file"
                 accept=".pdf"
                 onChange={handleFileChange}
-                className="w-full px-3 sm:px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-rose-200 focus:border-rose-400 hover:border-rose-300 hover:shadow-md file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-rose-50 file:text-rose-700 hover:file:bg-rose-100"
+                className="w-full px-3 sm:px-4 py-3 sm:py-4 border-2 border-gray-200 rounded-2xl transition-all duration-300 focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-400 hover:border-blue-300 hover:shadow-md file:mr-4 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100"
               />
               {errors.cvFile && (
                 <p className="text-xs sm:text-sm text-red-600 flex items-center gap-2 bg-red-50 p-2 sm:p-3 rounded-xl border border-red-200">
@@ -989,21 +1019,25 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
     }
   };
 
+  // Form state
   return (
-    <div className="min-h-screen bg-gradient-to-br from-rose-50 via-pink-50 to-purple-50">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50">
       <div className="container mx-auto px-4 py-6 sm:py-8">
         <div className="max-w-4xl mx-auto">
           {/* Header with Logo */}
           <div className="text-center mb-6 sm:mb-8">
             <div className="flex items-center justify-center mb-4 sm:mb-6">
               <img 
-                src="/swapro copy copy.png" 
+                src="/swapro copy.png" 
                 alt="SWAPRO Logo" 
                 className="h-16 sm:h-20 lg:h-24"
               />
             </div>
             <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
-              Formulir Pendaftaran Karyawan
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Portal Karir SWAPRO
+              </span>
+              <span className="text-xl sm:text-2xl lg:text-3xl ml-2">✨</span>
             </h1>
             <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
               Silakan lengkapi semua informasi yang diperlukan untuk proses pendaftaran Anda
@@ -1014,7 +1048,7 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
           <ProgressSteps steps={steps} currentStep={currentStep} />
 
           {/* Form Content */}
-          <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8">
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8 border border-white/20">
             <div className="mb-6 sm:mb-8">
               <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 flex items-center gap-3">
                 {React.createElement(steps[currentStep].icon, { 
@@ -1037,7 +1071,7 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
               className={`px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 shadow-lg ${
                 currentStep === 0
                   ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                  : 'bg-white text-gray-700 hover:bg-gray-50 hover:shadow-xl border-2 border-gray-200 hover:border-gray-300'
+                  : 'bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-white hover:shadow-xl border-2 border-gray-200 hover:border-gray-300'
               }`}
             >
               ← Sebelumnya
@@ -1050,7 +1084,7 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
                 className={`px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 shadow-lg ${
                   isSubmitting
                     ? 'bg-gray-400 text-white cursor-not-allowed'
-                    : 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white hover:from-emerald-600 hover:to-teal-600 hover:shadow-xl transform hover:scale-105'
+                    : 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white hover:from-emerald-500 hover:to-teal-600 hover:shadow-xl transform hover:scale-105'
                 }`}
               >
                 {isSubmitting ? 'Mengirim...' : 'Kirim Pendaftaran'}
@@ -1058,7 +1092,7 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
             ) : (
               <button
                 onClick={nextStep}
-                className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-rose-500 to-pink-500 text-white rounded-2xl font-bold text-sm sm:text-base hover:from-rose-600 hover:to-pink-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white rounded-2xl font-bold text-sm sm:text-base hover:from-blue-500 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
               >
                 Selanjutnya →
               </button>

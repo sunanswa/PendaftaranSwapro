@@ -20,8 +20,8 @@ const BooleanInput: React.FC<BooleanInputProps> = ({
       <label className="block text-xs sm:text-sm font-bold text-gray-700">
         <div className="flex items-center gap-2">
           {Icon && (
-            <div className="p-1 sm:p-1.5 bg-rose-100 rounded-lg">
-              <Icon size={14} className="text-rose-600" />
+            <div className="p-1 sm:p-1.5 bg-blue-100 rounded-lg">
+              <Icon size={14} className="text-blue-600" />
             </div>
           )}
           {label}

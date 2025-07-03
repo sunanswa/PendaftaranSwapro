@@ -36,10 +36,10 @@ const FormInput: React.FC<FormInputProps> = ({
 
   const inputClasses = `
     w-full px-3 sm:px-4 py-3 sm:py-4 border-2 rounded-2xl transition-all duration-300 
-    focus:outline-none focus:ring-4 focus:ring-rose-200 focus:border-rose-400
+    focus:outline-none focus:ring-4 focus:ring-blue-200 focus:border-blue-400
     ${error 
       ? 'border-red-300 bg-red-50 focus:border-red-500 focus:ring-red-200' 
-      : 'border-gray-200 bg-white hover:border-rose-300 hover:shadow-md'
+      : 'border-gray-200 bg-white/80 backdrop-blur-sm hover:border-blue-300 hover:shadow-md'
     }
     text-gray-900 placeholder-gray-400 font-medium text-sm sm:text-base
   `;
@@ -49,8 +49,8 @@ const FormInput: React.FC<FormInputProps> = ({
       <label className="block text-xs sm:text-sm font-bold text-gray-700">
         <div className="flex items-center gap-2">
           {Icon && (
-            <div className="p-1 sm:p-1.5 bg-rose-100 rounded-lg">
-              <Icon size={14} className="text-rose-600" />
+            <div className="p-1 sm:p-1.5 bg-blue-100 rounded-lg">
+              <Icon size={14} className="text-blue-600" />
             </div>
           )}
           {label}

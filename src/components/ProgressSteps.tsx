@@ -66,8 +66,8 @@ const ProgressSteps: React.FC<ProgressStepsProps> = ({ steps, currentStep }) => 
                   ${isActive 
                     ? `bg-gradient-to-r ${step.color} text-white shadow-xl transform scale-110` 
                     : isCompleted 
-                    ? 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white shadow-lg' 
-                    : 'bg-white text-gray-400 border-2 border-gray-200'
+                    ? 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white shadow-lg' 
+                    : 'bg-white/80 backdrop-blur-sm text-gray-400 border-2 border-gray-200'
                   }
                 `}>
                   {isCompleted ? (
