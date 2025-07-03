@@ -23,7 +23,9 @@ import {
   CreditCard,
   Car,
   FileText,
-  Sparkles
+  Sparkles,
+  DollarSign,
+  AlertTriangle
 } from 'lucide-react';
 
 import FormInput from './components/FormInput';
@@ -83,6 +85,11 @@ interface FormData {
   npwp: boolean;
   riwayatBurukKredit: boolean;
   
+  // Detail Riwayat Kredit (NEW)
+  jenisKreditBermasalah: string;
+  nominalTunggakan: string;
+  statusKolektibilitas: string;
+  
   // Motivasi & CV
   alasanMelamar: string;
   cvFile: File | null;
@@ -130,6 +137,9 @@ function App() {
     skck: false,
     npwp: false,
     riwayatBurukKredit: false,
+    jenisKreditBermasalah: '',
+    nominalTunggakan: '',
+    statusKolektibilitas: '',
     alasanMelamar: '',
     cvFile: null,
   });
@@ -166,6 +176,27 @@ function App() {
     'ADIRA PONDOK GEDE',
     'SMSF JAKARTA TIMUR',
     'SMSF JAKARTA UTARA'
+  ];
+
+  const jenisKreditOptions = [
+    'Kredit Kendaraan Bermotor (Motor/Mobil)',
+    'Kredit Tanpa Agunan (KTA)',
+    'Kredit Pemilikan Rumah (KPR)',
+    'Kartu Kredit',
+    'Kredit Multiguna',
+    'Pinjaman Online (Fintech)',
+    'Kredit Usaha/Modal Kerja',
+    'Lainnya'
+  ];
+
+  const kolektibilitasOptions = [
+    'Tidak Tahu',
+    'Kolektibilitas 0 (Lancar)',
+    'Kolektibilitas 1 (Dalam Perhatian Khusus)',
+    'Kolektibilitas 2 (Kurang Lancar)',
+    'Kolektibilitas 3 (Diragukan)',
+    'Kolektibilitas 4 (Macet)',
+    'Kolektibilitas 5 (Hapus Buku)'
   ];
 
   // Optimized input handler
@@ -222,6 +253,12 @@ function App() {
       case 4: // Dokumen
         if (!formData.alasanMelamar) newErrors.alasanMelamar = 'Alasan melamar harus diisi';
         if (!formData.cvFile) newErrors.cvFile = 'CV harus diupload';
+        // Validasi untuk riwayat kredit bermasalah
+        if (formData.riwayatBurukKredit) {
+          if (!formData.jenisKreditBermasalah) newErrors.jenisKreditBermasalah = 'Jenis kredit bermasalah harus dipilih';
+          if (!formData.nominalTunggakan) newErrors.nominalTunggakan = 'Nominal tunggakan harus diisi';
+          if (!formData.statusKolektibilitas) newErrors.statusKolektibilitas = 'Status kolektibilitas harus dipilih';
+        }
         break;
     }
     
@@ -330,6 +367,9 @@ function App() {
         skck: formData.skck ? 'Ya' : 'Tidak',
         npwp: formData.npwp ? 'Ya' : 'Tidak',
         riwayatBurukKredit: formData.riwayatBurukKredit ? 'Ya' : 'Tidak',
+        jenisKreditBermasalah: formData.jenisKreditBermasalah,
+        nominalTunggakan: formData.nominalTunggakan,
+        statusKolektibilitas: formData.statusKolektibilitas,
         alasanMelamar: formData.alasanMelamar,
         cvFileName: formData.cvFile?.name || 'Tidak ada file',
         cvFileData: cvFileData
@@ -383,6 +423,9 @@ function App() {
           skck: false,
           npwp: false,
           riwayatBurukKredit: false,
+          jenisKreditBermasalah: '',
+          nominalTunggakan: '',
+          statusKolektibilitas: '',
           alasanMelamar: '',
           cvFile: null,
         });
@@ -920,14 +963,84 @@ function App() {
                           icon={FileCheck}
                         />
                       </div>
+                    </div>
+
+                    {/* Riwayat Kredit */}
+                    <div className="bg-gradient-to-r from-red-50 to-rose-50 p-8 rounded-3xl border-2 border-red-200 shadow-lg">
+                      <h3 className="text-xl font-bold text-red-900 mb-6 flex items-center gap-3">
+                        <div className="p-2 bg-red-100 rounded-full">
+                          <AlertTriangle size={24} className="text-red-600" />
+                        </div>
+                        Riwayat Kredit & Pinjaman
+                      </h3>
                       
-                      <div className="mt-6 pt-6 border-t border-amber-200">
+                      <div className="space-y-6">
                         <BooleanInput
-                          label="Apakah Anda memiliki riwayat buruk di pinjaman/kredit?"
+                          label="Apakah Anda pernah mengalami masalah dalam pembayaran kredit/pinjaman?"
                           name="riwayatBurukKredit"
                           value={formData.riwayatBurukKredit}
                           onChange={(value) => handleInputChange('riwayatBurukKredit', value)}
+                          icon={AlertTriangle}
                         />
+                        
+                        {formData.riwayatBurukKredit && (
+                          <div className="space-y-6 animate-in slide-in-from-top duration-500 bg-white p-6 rounded-2xl border-2 border-red-300">
+                            <div className="bg-red-50 p-4 rounded-xl border border-red-200">
+                              <p className="text-sm text-red-700 font-medium flex items-center gap-2">
+                                <AlertTriangle size={16} />
+                                Mohon isi informasi berikut dengan jujur dan lengkap untuk proses evaluasi
+                              </p>
+                            </div>
+                            
+                            <FormInput
+                              label="Jenis Kredit/Pinjaman yang Bermasalah"
+                              name="jenisKreditBermasalah"
+                              type="select"
+                              value={formData.jenisKreditBermasalah}
+                              onChange={(value) => handleInputChange('jenisKreditBermasalah', value)}
+                              error={errors.jenisKreditBermasalah}
+                              required
+                              options={jenisKreditOptions}
+                              icon={CreditCard}
+                            />
+                            
+                            <FormInput
+                              label="Estimasi Nominal Tunggakan (dalam Rupiah)"
+                              name="nominalTunggakan"
+                              type="number"
+                              value={formData.nominalTunggakan}
+                              onChange={(value) => handleInputChange('nominalTunggakan', value)}
+                              error={errors.nominalTunggakan}
+                              required
+                              placeholder="contoh: 5000000"
+                              icon={DollarSign}
+                            />
+                            
+                            <FormInput
+                              label="Status Kolektibilitas (Tingkat Kemacetan)"
+                              name="statusKolektibilitas"
+                              type="select"
+                              value={formData.statusKolektibilitas}
+                              onChange={(value) => handleInputChange('statusKolektibilitas', value)}
+                              error={errors.statusKolektibilitas}
+                              required
+                              options={kolektibilitasOptions}
+                              icon={AlertTriangle}
+                            />
+                            
+                            <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                              <p className="text-xs text-blue-700">
+                                <strong>Keterangan Kolektibilitas:</strong><br/>
+                                • <strong>Lancar (0):</strong> Pembayaran tepat waktu<br/>
+                                • <strong>Dalam Perhatian Khusus (1):</strong> Tunggakan 1-90 hari<br/>
+                                • <strong>Kurang Lancar (2):</strong> Tunggakan 91-120 hari<br/>
+                                • <strong>Diragukan (3):</strong> Tunggakan 121-180 hari<br/>
+                                • <strong>Macet (4):</strong> Tunggakan lebih dari 180 hari<br/>
+                                • <strong>Hapus Buku (5):</strong> Kredit yang sudah dihapus dari pembukuan bank
+                              </p>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                     
