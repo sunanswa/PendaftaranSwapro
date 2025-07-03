@@ -25,7 +25,6 @@ import BooleanInput from './components/BooleanInput';
 import SplashScreen from './components/SplashScreen';
 import LandingPage from './components/LandingPage';
 import LoadingScreen from './components/LoadingScreen';
-import ChatBot from './components/ChatBot';
 
 interface FormData {
   // Step 1: Posisi & Penempatan
@@ -461,12 +460,7 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
   }
 
   if (appState === 'landing') {
-    return (
-      <>
-        <LandingPage onStartApplication={handleStartApplication} />
-        <ChatBot onStartApplication={handleStartApplication} />
-      </>
-    );
+    return <LandingPage onStartApplication={handleStartApplication} />;
   }
 
   if (appState === 'loading') {
@@ -1027,91 +1021,86 @@ Mohon konfirmasi bahwa data saya telah diterima. Terima kasih! 🙏`;
 
   // Form state
   return (
-    <>
-      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50">
-        <div className="container mx-auto px-4 py-6 sm:py-8">
-          <div className="max-w-4xl mx-auto">
-            {/* Header with Logo */}
-            <div className="text-center mb-6 sm:mb-8">
-              <div className="flex items-center justify-center mb-4 sm:mb-6">
-                <img 
-                  src="/swapro copy.png" 
-                  alt="SWAPRO Logo" 
-                  className="h-16 sm:h-20 lg:h-24"
-                />
-              </div>
-              <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
-                <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Portal Karir SWAPRO
-                </span>
-                <span className="text-xl sm:text-2xl lg:text-3xl ml-2">✨</span>
-              </h1>
-              <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-                Silakan lengkapi semua informasi yang diperlukan untuk proses pendaftaran Anda
-              </p>
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-purple-50 to-orange-50">
+      <div className="container mx-auto px-4 py-6 sm:py-8">
+        <div className="max-w-4xl mx-auto">
+          {/* Header with Logo */}
+          <div className="text-center mb-6 sm:mb-8">
+            <div className="flex items-center justify-center mb-4 sm:mb-6">
+              <img 
+                src="/swapro copy.png" 
+                alt="SWAPRO Logo" 
+                className="h-16 sm:h-20 lg:h-24"
+              />
+            </div>
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
+              <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+                Portal Karir SWAPRO
+              </span>
+              <span className="text-xl sm:text-2xl lg:text-3xl ml-2">✨</span>
+            </h1>
+            <p className="text-sm sm:text-base lg:text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
+              Silakan lengkapi semua informasi yang diperlukan untuk proses pendaftaran Anda
+            </p>
+          </div>
+
+          {/* Progress Steps */}
+          <ProgressSteps steps={steps} currentStep={currentStep} />
+
+          {/* Form Content */}
+          <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8 border border-white/20">
+            <div className="mb-6 sm:mb-8">
+              <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 flex items-center gap-3">
+                {React.createElement(steps[currentStep].icon, { 
+                  size: 28, 
+                  className: `text-transparent bg-gradient-to-r ${steps[currentStep].color} bg-clip-text` 
+                })}
+                {steps[currentStep].title}
+              </h2>
+              <div className={`h-1 w-20 sm:w-24 bg-gradient-to-r ${steps[currentStep].color} rounded-full`}></div>
             </div>
 
-            {/* Progress Steps */}
-            <ProgressSteps steps={steps} currentStep={currentStep} />
+            {renderStepContent()}
+          </div>
 
-            {/* Form Content */}
-            <div className="bg-white/80 backdrop-blur-sm rounded-3xl shadow-2xl p-6 sm:p-8 lg:p-10 mb-6 sm:mb-8 border border-white/20">
-              <div className="mb-6 sm:mb-8">
-                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2 flex items-center gap-3">
-                  {React.createElement(steps[currentStep].icon, { 
-                    size: 28, 
-                    className: `text-transparent bg-gradient-to-r ${steps[currentStep].color} bg-clip-text` 
-                  })}
-                  {steps[currentStep].title}
-                </h2>
-                <div className={`h-1 w-20 sm:w-24 bg-gradient-to-r ${steps[currentStep].color} rounded-full`}></div>
-              </div>
+          {/* Navigation Buttons */}
+          <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between">
+            <button
+              onClick={prevStep}
+              disabled={currentStep === 0}
+              className={`px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 shadow-lg ${
+                currentStep === 0
+                  ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
+                  : 'bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-white hover:shadow-xl border-2 border-gray-200 hover:border-gray-300'
+              }`}
+            >
+              ← Sebelumnya
+            </button>
 
-              {renderStepContent()}
-            </div>
-
-            {/* Navigation Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 justify-between">
+            {currentStep === steps.length - 1 ? (
               <button
-                onClick={prevStep}
-                disabled={currentStep === 0}
+                onClick={handleSubmit}
+                disabled={isSubmitting}
                 className={`px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 shadow-lg ${
-                  currentStep === 0
-                    ? 'bg-gray-200 text-gray-400 cursor-not-allowed'
-                    : 'bg-white/80 backdrop-blur-sm text-gray-700 hover:bg-white hover:shadow-xl border-2 border-gray-200 hover:border-gray-300'
+                  isSubmitting
+                    ? 'bg-gray-400 text-white cursor-not-allowed'
+                    : 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white hover:from-emerald-500 hover:to-teal-600 hover:shadow-xl transform hover:scale-105'
                 }`}
               >
-                ← Sebelumnya
+                {isSubmitting ? 'Mengirim...' : 'Kirim Pendaftaran'}
               </button>
-
-              {currentStep === steps.length - 1 ? (
-                <button
-                  onClick={handleSubmit}
-                  disabled={isSubmitting}
-                  className={`px-6 sm:px-8 py-3 sm:py-4 rounded-2xl font-bold text-sm sm:text-base transition-all duration-300 shadow-lg ${
-                    isSubmitting
-                      ? 'bg-gray-400 text-white cursor-not-allowed'
-                      : 'bg-gradient-to-r from-emerald-400 to-teal-500 text-white hover:from-emerald-500 hover:to-teal-600 hover:shadow-xl transform hover:scale-105'
-                  }`}
-                >
-                  {isSubmitting ? 'Mengirim...' : 'Kirim Pendaftaran'}
-                </button>
-              ) : (
-                <button
-                  onClick={nextStep}
-                  className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white rounded-2xl font-bold text-sm sm:text-base hover:from-blue-500 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
-                >
-                  Selanjutnya →
-                </button>
-              )}
-            </div>
+            ) : (
+              <button
+                onClick={nextStep}
+                className="px-6 sm:px-8 py-3 sm:py-4 bg-gradient-to-r from-blue-400 to-purple-500 text-white rounded-2xl font-bold text-sm sm:text-base hover:from-blue-500 hover:to-purple-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-105"
+              >
+                Selanjutnya →
+              </button>
+            )}
           </div>
         </div>
       </div>
-      
-      {/* ChatBot - only show in form state */}
-      <ChatBot onStartApplication={handleStartApplication} />
-    </>
+    </div>
   );
 };
 
