@@ -13,7 +13,8 @@ import {
   Target,
   TrendingUp,
   CheckCircle,
-  Play
+  Play,
+  Handshake
 } from 'lucide-react';
 
 interface LandingPageProps {
@@ -34,7 +35,7 @@ const LandingPage: React.FC<LandingPageProps> = ({ onStartApplication }) => {
 
   const stats = [
     { icon: Users, number: '1,500+', label: 'Karyawan Bergabung', color: 'from-blue-400 to-blue-500' },
-    { icon: Building2, number: '25+', label: 'Cabang Tersebar', color: 'from-orange-400 to-orange-500' },
+    { icon: Handshake, number: '50+', label: 'Mitra Perusahaan', color: 'from-orange-400 to-orange-500' },
     { icon: Award, number: '10+', label: 'Tahun Pengalaman', color: 'from-purple-400 to-purple-500' },
     { icon: Star, number: '4.8/5', label: 'Rating Kepuasan', color: 'from-green-400 to-green-500' }
   ];
