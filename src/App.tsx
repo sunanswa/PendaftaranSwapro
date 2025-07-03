@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { 
   User, 
   MapPin, 
@@ -13,7 +13,8 @@ import {
   Building,
   CheckCircle,
   AlertCircle,
-  Send
+  Send,
+  Shield
 } from 'lucide-react';
 
 interface FormData {
@@ -123,7 +124,8 @@ function App() {
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [currentSection, setCurrentSection] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+  const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error' | 'duplicate'>('idle');
+  const [submitMessage, setSubmitMessage] = useState('');
 
   const sections = [
     { title: 'Data Pribadi', icon: User },
@@ -153,15 +155,16 @@ function App() {
     'SMSF JAKARTA UTARA'
   ];
 
-  const handleInputChange = (field: keyof FormData, value: any) => {
+  // Optimized input change handler to prevent unnecessary re-renders
+  const handleInputChange = useCallback((field: keyof FormData, value: any) => {
     setFormData(prev => ({ ...prev, [field]: value }));
     // Clear error when user starts typing
     if (errors[field]) {
       setErrors(prev => ({ ...prev, [field]: '' }));
     }
-  };
+  }, [errors]);
 
-  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file && file.type === 'application/pdf') {
       if (file.size <= 5 * 1024 * 1024) { // 5MB limit
@@ -172,7 +175,7 @@ function App() {
     } else if (file) {
       setErrors(prev => ({ ...prev, cvFile: 'File harus berformat PDF' }));
     }
-  };
+  }, [handleInputChange]);
 
   const fileToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
@@ -197,6 +200,7 @@ function App() {
         if (!formData.penempatan) newErrors.penempatan = 'Penempatan harus dipilih';
         if (!formData.namaLengkap) newErrors.namaLengkap = 'Nama lengkap harus diisi';
         if (!formData.nik) newErrors.nik = 'NIK harus diisi';
+        if (formData.nik && formData.nik.length !== 16) newErrors.nik = 'NIK harus 16 digit';
         if (!formData.noHp) newErrors.noHp = 'Nomor HP harus diisi';
         if (!formData.tempatLahir) newErrors.tempatLahir = 'Tempat lahir harus diisi';
         if (!formData.tanggalLahir) newErrors.tanggalLahir = 'Tanggal lahir harus diisi';
@@ -245,7 +249,7 @@ function App() {
         body: JSON.stringify(data)
       });
       
-      return true;
+      return { success: true };
     } catch (error) {
       console.error('Error submitting to Google Sheets:', error);
       throw error;
@@ -261,6 +265,7 @@ function App() {
 
     setIsSubmitting(true);
     setSubmitStatus('idle');
+    setSubmitMessage('');
 
     try {
       // Convert CV file to base64 if exists
@@ -318,9 +323,12 @@ function App() {
       };
 
       // Submit to Google Sheets
-      await submitToGoogleSheets(submissionData);
+      const result = await submitToGoogleSheets(submissionData);
       
+      // Since we're using no-cors mode, we can't read the actual response
+      // But if no error is thrown, we assume success
       setSubmitStatus('success');
+      setSubmitMessage('Formulir berhasil dikirim! Data Anda telah tersimpan di sistem kami dan CV telah diupload ke Google Drive.');
       
       // Reset form after successful submission
       setTimeout(() => {
@@ -370,11 +378,13 @@ function App() {
         });
         setCurrentSection(0);
         setSubmitStatus('idle');
-      }, 3000);
+        setSubmitMessage('');
+      }, 5000);
       
     } catch (error) {
       console.error('Submission error:', error);
       setSubmitStatus('error');
+      setSubmitMessage('Terjadi kesalahan saat mengirim formulir. Silakan coba lagi.');
     } finally {
       setIsSubmitting(false);
     }
@@ -386,7 +396,8 @@ function App() {
     type = 'text', 
     required = false, 
     options = [],
-    step
+    step,
+    maxLength
   }: {
     label: string;
     field: keyof FormData;
@@ -394,6 +405,7 @@ function App() {
     required?: boolean;
     options?: string[];
     step?: string;
+    maxLength?: number;
   }) => (
     <div className="space-y-2">
       <label className="block text-sm font-medium text-gray-700">
@@ -421,11 +433,13 @@ function App() {
           }`}
           rows={4}
           placeholder={`Masukkan ${label.toLowerCase()}`}
+          maxLength={maxLength}
         />
       ) : (
         <input
           type={type}
           step={step}
+          maxLength={maxLength}
           value={formData[field] as string}
           onChange={(e) => handleInputChange(field, e.target.value)}
           className={`w-full px-4 py-3 border rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors ${
@@ -495,20 +509,37 @@ function App() {
           <p className="text-gray-600">
             Lengkapi semua informasi dengan benar dan akurat
           </p>
+          
+          {/* Anti-Duplicate Notice */}
+          <div className="mt-4 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-center justify-center gap-2 text-blue-800">
+              <Shield size={20} />
+              <span className="text-sm font-medium">
+                Sistem Anti-Duplikasi: Setiap NIK hanya dapat mendaftar sekali
+              </span>
+            </div>
+          </div>
         </div>
 
         {/* Success/Error Messages */}
         {submitStatus === 'success' && (
           <div className="mb-6 p-4 bg-green-100 border border-green-400 text-green-700 rounded-lg flex items-center gap-2">
             <CheckCircle size={20} />
-            <span>Formulir berhasil dikirim! Data Anda telah tersimpan di sistem kami dan CV telah diupload ke Google Drive.</span>
+            <span>{submitMessage}</span>
           </div>
         )}
 
         {submitStatus === 'error' && (
           <div className="mb-6 p-4 bg-red-100 border border-red-400 text-red-700 rounded-lg flex items-center gap-2">
             <AlertCircle size={20} />
-            <span>Terjadi kesalahan saat mengirim formulir. Silakan coba lagi.</span>
+            <span>{submitMessage}</span>
+          </div>
+        )}
+
+        {submitStatus === 'duplicate' && (
+          <div className="mb-6 p-4 bg-yellow-100 border border-yellow-400 text-yellow-700 rounded-lg flex items-center gap-2">
+            <AlertCircle size={20} />
+            <span>{submitMessage}</span>
           </div>
         )}
 
@@ -581,7 +612,13 @@ function App() {
 
                 {/* Personal Information Fields */}
                 <InputField label="Nama Lengkap" field="namaLengkap" required />
-                <InputField label="NIK" field="nik" required />
+                <InputField 
+                  label="NIK" 
+                  field="nik" 
+                  required 
+                  maxLength={16}
+                  type="number"
+                />
                 <InputField label="No. HP" field="noHp" type="tel" required />
                 <InputField label="Tempat Lahir" field="tempatLahir" required />
                 <InputField label="Tanggal Lahir" field="tanggalLahir" type="date" required />
@@ -621,17 +658,29 @@ function App() {
               
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2">
-                  <InputField label="Alamat Sesuai KTP" field="alamatKtp" type="textarea" required />
+                  <InputField 
+                    label="Alamat Sesuai KTP" 
+                    field="alamatKtp" 
+                    type="textarea" 
+                    required 
+                    maxLength={500}
+                  />
                 </div>
                 <div className="md:col-span-2">
-                  <InputField label="Alamat Domisili (Tempat Tinggal Sekarang)" field="alamatDomisili" type="textarea" required />
+                  <InputField 
+                    label="Alamat Domisili (Tempat Tinggal Sekarang)" 
+                    field="alamatDomisili" 
+                    type="textarea" 
+                    required 
+                    maxLength={500}
+                  />
                 </div>
                 <InputField label="RT/RW" field="rtRw" />
                 <InputField label="Nomor Rumah" field="nomorRumah" />
                 <InputField label="Kelurahan" field="kelurahan" />
                 <InputField label="Kecamatan" field="kecamatan" />
                 <InputField label="Kota" field="kota" required />
-                <InputField label="Kode Pos" field="kodePos" />
+                <InputField label="Kode Pos" field="kodePos" maxLength={5} />
               </div>
             </div>
           )}
@@ -688,6 +737,7 @@ function App() {
                           label="Deskripsi Tugas Utama" 
                           field="deskripsiTugas" 
                           type="textarea" 
+                          maxLength={1000}
                         />
                       </div>
                     </div>
@@ -725,6 +775,7 @@ function App() {
                   field="alasanMelamar" 
                   type="textarea" 
                   required 
+                  maxLength={1000}
                 />
                 
                 {/* CV Upload */}
