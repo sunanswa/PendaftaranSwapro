@@ -127,24 +127,28 @@ const initialFormData: FormData = {
   cvFile: null
 };
 
-// Updated position mapping with proper capitalization and correct placements
+// Position mapping with new positions and placements
 const positionPlacements = {
-  // Multiple positions with shared placements
-  'Sales Officer Chaneling (SOC)': [
+  // Positions with multiple branch placements
+  'Sales Officer - CMO': [
     'ADIRA TEBET MOTOR',
     'ADIRA TEBET MOBIL',
     'ADIRA KELAPA GADING MOTOR',
     'ADIRA KELAPA GADING MOBIL',
     'ADIRA KETAPANG',
-    'ADIRA PONDOK GEDE'
+    'ADIRA PONDOK GEDE',
+    'SMS FINANCE JAKARTA TIMUR',
+    'SMS FINANCE JAKARTA UTARA'
   ],
-  'Sales Officer Mobile (SOM)': [
+  'Collection Remedial Officer': [
     'ADIRA TEBET MOTOR',
     'ADIRA TEBET MOBIL',
     'ADIRA KELAPA GADING MOTOR',
     'ADIRA KELAPA GADING MOBIL',
     'ADIRA KETAPANG',
-    'ADIRA PONDOK GEDE'
+    'ADIRA PONDOK GEDE',
+    'SMS FINANCE JAKARTA TIMUR',
+    'SMS FINANCE JAKARTA UTARA'
   ],
   'Relationship Officer (RO)': [
     'ADIRA TEBET MOTOR',
@@ -152,50 +156,57 @@ const positionPlacements = {
     'ADIRA KELAPA GADING MOTOR',
     'ADIRA KELAPA GADING MOBIL',
     'ADIRA KETAPANG',
-    'ADIRA PONDOK GEDE'
-  ],
-  'Remedial Collection (REMOF)': [
-    'ADIRA TEBET MOTOR',
-    'ADIRA TEBET MOBIL',
-    'ADIRA KELAPA GADING MOTOR',
-    'ADIRA KELAPA GADING MOBIL',
-    'ADIRA KETAPANG',
-    'ADIRA PONDOK GEDE'
-  ],
-  'Problem Account Officer (PAO)': [
-    'ADIRA TEBET MOTOR',
-    'ADIRA TEBET MOBIL',
-    'ADIRA KELAPA GADING MOTOR',
-    'ADIRA KELAPA GADING MOBIL',
-    'ADIRA KETAPANG',
-    'ADIRA PONDOK GEDE'
+    'ADIRA PONDOK GEDE',
+    'SMS FINANCE JAKARTA TIMUR',
+    'SMS FINANCE JAKARTA UTARA'
   ],
   
-  // Single position with single placement
-  'Sales Force (SF)': [
-    'ADIRA TEBET MOTOR'
+  // Positions with back office placement
+  'CUSTOMER SERVICE STAFF': [
+    'ADIRA BACK OFFICE JAKARTA'
   ],
-  
-  // Positions with SMSF placements
-  'Credit Marketing Officer': [
-    'SMSF JAKARTA TIMUR',
-    'SMSF JAKARTA UTARA'
+  'DATA ADMIN STAFF': [
+    'ADIRA BACK OFFICE JAKARTA'
   ],
-  'Recovery': [
-    'SMSF JAKARTA TIMUR',
-    'SMSF JAKARTA UTARA'
+  'GENERAL ADMIN STAFF': [
+    'ADIRA BACK OFFICE JAKARTA'
   ],
-  'Credit Relation Executive / Credit Relation Officer': [
-    'SMSF JAKARTA TIMUR',
-    'SMSF JAKARTA UTARA'
+  'TELLER': [
+    'ADIRA BACK OFFICE JAKARTA'
   ],
-  
-  // Specific single placements
-  'Sales Advisor/Sales Executive Used Car': ['HO Ampera'],
-  'Sourcing Consultant/Mekanik Inspektor': ['JABODETABEK'],
-  'Sales Multiguna': ['JABODETABEK'],
-  'Telemarketing Astra': ['Juanda Jakarta Pusat'],
-  'Telemarketing WOM': ['Tangerang City']
+  'CLUSTER COLLECTION SUPPORT': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'REGIONAL COLLECTION SUPPORT': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'REGIONAL CREDIT ADMIN': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'REGIONAL CREDIT SUPPORT': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'REGIONAL TELESURVEYOR': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'AREA RECOVERY ADMIN': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'COLLATERAL STAFF': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'PAYMENT PROCESSOR STAFF': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'REGIONAL MESSENGER STAFF': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'WAREHOUSE STAFF': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ],
+  'MKT ADMIN': [
+    'ADIRA BACK OFFICE JAKARTA'
+  ]
 };
 
 type AppState = 'splash' | 'landing' | 'loading' | 'form' | 'submitted';
